@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.enterprise.core.navigation"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig { minSdk = 26 }
 }
 
