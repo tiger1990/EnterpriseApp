@@ -1,0 +1,1 @@
+// To generate the files, run the Gradle task: ./gradlew :app:generateBaselineProfile

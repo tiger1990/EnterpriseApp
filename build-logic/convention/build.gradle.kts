@@ -20,10 +20,15 @@ kotlin {
 dependencies {
     compileOnly(libs.plugins.android.application.toDep())
     compileOnly(libs.plugins.android.library.toDep())
+    compileOnly(libs.plugins.android.test.toDep())
     compileOnly(libs.plugins.kotlin.jvm.toDep())
     compileOnly(libs.plugins.compose.compiler.toDep())
     compileOnly(libs.plugins.hilt.toDep())
     compileOnly(libs.plugins.ksp.toDep())
+    // Add this so your convention plugin can see the Baseline Profile classes
+    implementation(libs.plugins.baseline.profile.toDep())
+    // ADD THIS LINE
+    //implementation(libs.androidx.baseline.profile.gradle.plugin)
 }
 
 // Extension to convert PluginDependency to dependency notation

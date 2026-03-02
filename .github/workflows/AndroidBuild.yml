@@ -1,0 +1,211 @@
+name: Android CI Build
+
+# Reference: https://github.com/marketplace/actions/automated-build-android-app-with-github-action,
+# https://proandroiddev.com/android-ci-cd-pipeline-with-github-actions-demystifying-github-actions-83258e76a18f
+## There are various tools to build CI/CD pipelines like Jenkins, CircleCI, Bitrise, TravisCI etc.
+# GitHub Actions is a new addition to this list. It makes the whole process of building a pipeline
+# very easy and is completely free for public repositories.
+#“hey GitHub Actions, each time a PR is opened on X branch,
+#  automatically build and test the new change.
+#  And each time a new change is merged into or pushed to X branch, deploy that change to Y server.”
+#  At the core of GitHub Actions lies five concepts: jobs, workflows, events, actions, and runners.
+# help: what-is-ci-cd-how-to-build-ci-cd-pipeline-in-android-using-github-actions
+# Jobs are the tasks you command GitHub Actions to execute through the YAML config file.
+# A job could be something like telling GitHub actions to build your source code,
+# run tests, or deploy the code that has been built to some remote server.
+
+#  Workflows are essentially automated processes that contain one or more logically related jobs.
+#  For example, you could put the build and run tests jobs into the same workflow,
+#  and the deployment job into a different workflow.
+# GitHub Actions considers each configuration file that you put in some folder in your repo a workflow.
+
+# Events are literally the events that trigger the execution of a job by GitHub Actions.
+# For example, is it on-PR to master? Is it on-push to master? is it on-merge to master?
+# A job can only be executed by a GitHub Action when some event happens.
+
+# JOBS can also be scheduled at time
+#For example, in your config file, instead of specifying that the event that should trigger
+#  the execution of, let’s say, the build-and-test job, you could schedule
+#  it to happen a 2am every day. In fact, you could both schedule a job and
+#  specify an event for that same job.
+
+#Actions are the reusable commands that you can reuse in your config file.
+#  You can write your custom actions or use existing ones.
+#eg - name: Checkout uses: actions/checkout@v4.1.1
+
+# A runner is the remote computer that GitHub Actions uses to execute the jobs you tell it to.
+## The type of runner that the job will run on runs-on: ubuntu-latest
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events for the "main", "develop" branch
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+
+concurrency:
+  # Cancel in-progress runs for the same branch to save CI minutes
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: '17'
+  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  # ─── Static Analysis ──────────────────────────────────────────────────────
+  lint:
+    name: Lint
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v4
+
+#      - name: Set Up JDK
+#        uses: actions/setup-java@v4
+#        with:
+#         distribution: 'zulu' # See 'Supported distributions' for available options
+#         java-version: '17'
+#         cache: 'gradle'
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Run lint
+        run: ./gradlew lint --continue
+
+      - name: Upload lint reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-reports
+          path: '**/build/reports/lint-results*.html'
+
+  # ─── Unit Tests ───────────────────────────────────────────────────────────
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest --continue
+
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Unit Test Results
+          path: '**/build/test-results/testDebugUnitTest/**.xml'
+          reporter: java-junit
+
+  # ─── Snapshot Tests (Paparazzi) ───────────────────────────────────────────
+  snapshot-tests:
+    name: Snapshot Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Fetch golden images stored via Git LFS
+          lfs: true
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Verify snapshots (Paparazzi)
+        run: ./gradlew verifyPaparazziDebug --continue
+
+      - name: Upload snapshot diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-diffs
+          path: '**/build/paparazzi/failures/'
+
+  # ─── Build ────────────────────────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [ lint, unit-tests ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      - name: Assemble debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 7
+
+  # ─── Release Build ────────────────────────────────────────────────────────
+  release-build:
+    name: Release Build
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Assemble release APK
+        run: ./gradlew assembleRelease
+        env:
+          SIGNING_KEY_ALIAS:      ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD:   ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+
+      - name: Upload release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/app-release.apk

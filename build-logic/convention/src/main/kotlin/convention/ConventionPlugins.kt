@@ -9,15 +9,15 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 
+//refer later : https://medium.com/@amsavarthan/unlocking-reusability-in-gradle-how-to-use-kotlin-written-convention-plugins-11b95cb008ef
 // ─── Android Application ─────────────────────────────────────────────────────
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         with(pluginManager) {
             apply("com.android.application")
-            apply("org.jetbrains.kotlin.android")
         }
         extensions.configure<ApplicationExtension> {
-            configureAndroidCommon(this)
+            configureAppModule(this)
             defaultConfig.targetSdk = 35
         }
     }
@@ -28,6 +28,7 @@ class AndroidApplicationComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         with(pluginManager) {
             apply("enterprise.android.application")
+            // Required for Compose 2.0+
             apply("org.jetbrains.kotlin.plugin.compose")
         }
         extensions.configure<ApplicationExtension> {
@@ -41,10 +42,9 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         with(pluginManager) {
             apply("com.android.library")
-            apply("org.jetbrains.kotlin.android")
         }
         extensions.configure<LibraryExtension> {
-            configureAndroidCommon(this)
+            configureLibraryModule(this)
             // Libraries expose no resourcePrefix by default; set per-module if needed
             defaultConfig.consumerProguardFiles("consumer-rules.pro")
         }
@@ -56,6 +56,7 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         with(pluginManager) {
             apply("enterprise.android.library")
+            // Required for Compose 2.0+
             apply("org.jetbrains.kotlin.plugin.compose")
         }
         extensions.configure<LibraryExtension> {
@@ -139,5 +140,32 @@ class AndroidBaselineProfileConventionPlugin : Plugin<Project> {
         dependencies {
             add("implementation", libs.findLibrary("androidx.profileinstaller").get())
         }
+        // Ensure this is only applied to modules that have an Android plugin
+//        pluginManager.withPlugin("com.android.application") {
+//            pluginManager.apply("androidx.baselineprofile")
+//            dependencies {
+//                add("implementation", libs.findLibrary("androidx.profileinstaller").get())
+//            }
+//        }
+//        pluginManager.withPlugin("com.android.library") {
+//            pluginManager.apply("androidx.baselineprofile")
+//            dependencies {
+//                add("implementation", libs.findLibrary("androidx.profileinstaller").get())
+//            }
+//        }
+        // Now the extension is available
+//        extensions.configure<BaselineProfileProducerExtension> {
+//            // Configure producer-specific options here
+//            // e.g., managedDevices += "pixel6Api31"
+//            warnings {
+////                maxAgpVersion.set(false)
+//            }
+//        }
+//        extensions.configure<BaselineProfileProducerExtension> {
+//                    // New structure for handling AGP version strictness in 1.3.x+
+//                    warnings {
+//                        strict.set(false) // Replaces old maxAgpVersion toggle
+//                    }
+//                }
     }
 }
