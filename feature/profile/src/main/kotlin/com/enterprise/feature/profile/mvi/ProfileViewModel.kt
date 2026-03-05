@@ -1,7 +1,15 @@
-package com.enterprise.feature.home.mvi
+package com.enterprise.feature.profile.mvi
 
-
-// ═══════════════════════════ ViewModel ════════════════════════════════════════
+import androidx.lifecycle.SavedStateHandle
+import com.enterprise.core.common.mvi.MviViewModel
+import com.enterprise.core.common.result.Result
+import com.enterprise.core.domain.usecase.GetProfileUseCase
+import com.enterprise.core.navigation.EditProfileRoute
+import com.enterprise.core.navigation.NavigationEvent
+import com.enterprise.core.navigation.NavigationEventBus
+import com.enterprise.core.navigation.SettingsRoute
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(

@@ -23,18 +23,19 @@ data class HomeState(
 // ─── Actions ──────────────────────────────────────────────────────────────────
 
 sealed interface HomeAction : UiAction {
-    data object LoadItems          : HomeAction
-    data object RefreshItems       : HomeAction
-    data class ItemClicked(val item: Item)  : HomeAction
+    data object LoadItems : HomeAction
+    data object RefreshItems : HomeAction
+    data class ItemClicked(val item: Item) : HomeAction
     data class FavouriteToggled(val itemId: String) : HomeAction
-    data object SearchClicked      : HomeAction
-    data object ProfileClicked     : HomeAction
+    data object SearchClicked : HomeAction
+    data object ProfileClicked : HomeAction
     data class TabSelected(val index: Int) : HomeAction
-    data object ErrorDismissed     : HomeAction
+    data object ErrorDismissed : HomeAction
+
     // Internal — emitted by middleware after async operations
-    internal data class ItemsLoaded(val items: List<Item>) : HomeAction
-    internal data class ItemsLoadFailed(val message: String) : HomeAction
-    internal data class FavouriteUpdated(val item: Item)     : HomeAction
+    data class ItemsLoaded(val items: List<Item>) : HomeAction
+    data class ItemsLoadFailed(val message: String) : HomeAction
+    data class FavouriteUpdated(val item: Item) : HomeAction
 }
 
 // ─── Effects ──────────────────────────────────────────────────────────────────
@@ -48,7 +49,7 @@ sealed interface HomeEffect : UiEffect {
 class HomeReducer : Reducer<HomeState, HomeAction> {
     override fun reduce(state: HomeState, action: HomeAction): HomeState = when (action) {
         HomeAction.LoadItems -> state.copy(
-            isLoading    = state.items.isEmpty(),
+            isLoading = state.items.isEmpty(),
             errorMessage = null,
         )
 
@@ -58,14 +59,14 @@ class HomeReducer : Reducer<HomeState, HomeAction> {
         )
 
         is HomeAction.ItemsLoaded -> state.copy(
-            items        = action.items,
-            isLoading    = false,
+            items = action.items,
+            isLoading = false,
             isRefreshing = false,
             errorMessage = null,
         )
 
         is HomeAction.ItemsLoadFailed -> state.copy(
-            isLoading    = false,
+            isLoading = false,
             isRefreshing = false,
             errorMessage = action.message,
         )

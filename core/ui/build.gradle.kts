@@ -4,11 +4,12 @@ plugins {
 
 android {
     namespace = "com.enterprise.core.ui"
-    compileSdk = 36
-    defaultConfig { minSdk = 26 }
+    compileSdk = libs.versions.compileSdk.get().toInt()
+    defaultConfig { minSdk = libs.versions.minSdk.get().toInt() }
 }
 
 dependencies {
     api(libs.androidx.compose.material3)
     api(libs.androidx.compose.animation)
+    api(project(":core:tokens"))
 }

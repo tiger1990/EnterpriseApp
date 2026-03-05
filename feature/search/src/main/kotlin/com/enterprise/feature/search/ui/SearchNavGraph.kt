@@ -1,8 +1,9 @@
-package com.enterprise.feature.home.ui
+package com.enterprise.feature.search.ui
 
 import androidx.navigation.compose.composable
-import com.enterprise.core.navigation.HomeRoute
+import androidx.navigation.navDeepLink
 import com.enterprise.core.navigation.NavGraphBuilderScope
+import com.enterprise.core.navigation.SearchRoute
 
 /**
  * Registers the Home feature's destinations.
@@ -17,7 +18,7 @@ import com.enterprise.core.navigation.NavGraphBuilderScope
 fun NavGraphBuilderScope.searchGraph() {
     builder.composable<SearchRoute>(
         deepLinks = listOf(
-            androidx.navigation.navDeepLink { uriPattern = SearchRoute.DEEP_LINK_URI }
+            navDeepLink { uriPattern = SearchRoute.DEEP_LINK_URI }
         ),
     ) {
         SearchScreen()

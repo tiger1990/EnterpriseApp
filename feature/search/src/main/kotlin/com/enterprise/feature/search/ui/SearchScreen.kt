@@ -8,10 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,27 +19,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.compose.composable
-import com.enterprise.core.common.mvi.MviViewModel
-import com.enterprise.core.common.mvi.Reducer
-import com.enterprise.core.common.mvi.UiAction
-import com.enterprise.core.common.mvi.UiEffect
-import com.enterprise.core.common.mvi.UiState
-import com.enterprise.core.common.result.Result
 import com.enterprise.core.domain.model.Item
-import com.enterprise.core.domain.model.SearchResult
-import com.enterprise.core.domain.usecase.SearchItemsUseCase
-import com.enterprise.core.navigation.DetailRoute
-import com.enterprise.core.navigation.NavGraphBuilderScope
-import com.enterprise.core.navigation.NavigationEvent
-import com.enterprise.core.navigation.NavigationEventBus
-import com.enterprise.core.navigation.SearchRoute
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import com.enterprise.core.tokens.R
+import com.enterprise.feature.search.mvi.SearchAction
+import com.enterprise.feature.search.mvi.SearchState
+import com.enterprise.feature.search.mvi.SearchViewModel
 
 // ═══════════════════════════ UI ═══════════════════════════════════════════════
 
@@ -74,15 +58,26 @@ internal fun SearchContent(
                         expanded      = state.isActive,
                         onExpandedChange = { onAction(SearchAction.ActiveChanged(it)) },
                         placeholder   = { Text("Search items...") },
-                        leadingIcon   = { Icon(Icons.Default.Search, null) },
+                        leadingIcon   = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_search),
+                                contentDescription = "Search"
+                            )
+                        },
                         trailingIcon  = {
                             if (state.query.isNotEmpty()) {
                                 IconButton(onClick = { onAction(SearchAction.ClearQuery) }) {
-                                    Icon(Icons.Default.Clear, "Clear")
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_clear),
+                                        contentDescription = "Clear"
+                                    )
                                 }
                             } else {
                                 IconButton(onClick = { onAction(SearchAction.BackPressed) }) {
-                                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_arrow_back),
+                                        contentDescription = "Back"
+                                    )
                                 }
                             }
                         },
@@ -128,8 +123,13 @@ private fun RecentSearches(searches: List<String>, onSearchClick: (String) -> Un
         searches.forEach { query ->
             ListItem(
                 headlineContent = { Text(query) },
-                leadingContent  = { Icon(Icons.Default.Search, null) },
-                modifier        = Modifier.clickable { onSearchClick(query) },
+                leadingContent  = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_search),
+                        contentDescription = "Search"
+                    )
+                },
+                modifier = Modifier.clickable { onSearchClick(query) },
             )
         }
     }

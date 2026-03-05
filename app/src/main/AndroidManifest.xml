@@ -4,14 +4,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".EnterpriseApplication"
+        android:name="com.enterprise.app.EnterpriseApplication"
         android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Enterprise">
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.enterprise.app.ui.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
 
@@ -36,9 +38,11 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="enterprise" android:host="*" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="enterprise" />
+                <data android:host="*" />
             </intent-filter>
-
         </activity>
     </application>
 </manifest>

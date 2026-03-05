@@ -1,0 +1,3 @@
+stable class com.enterprise.app.di.ActivityModule {
+  <runtime stability> = Stable
+}

@@ -1,0 +1,33 @@
+unstable class com.enterprise.feature.profile.mvi.ProfileState {
+  unstable val profile: UserProfile?
+  stable val isLoading: Boolean
+  stable val errorMessage: String?
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.profile.mvi.ProfileAction.LoadProfile {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.profile.mvi.ProfileAction.EditProfileTapped {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.profile.mvi.ProfileAction.SettingsTapped {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.profile.mvi.ProfileAction.BackPressed {
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.profile.mvi.ProfileAction.ProfileLoaded {
+  unstable val profile: UserProfile
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.profile.mvi.ProfileAction.LoadFailed {
+  stable val message: String
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.profile.mvi.ProfileReducer {
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.profile.mvi.ProfileViewModel {
+  unstable val getProfile: GetProfileUseCase
+  <runtime stability> = Unstable
+}

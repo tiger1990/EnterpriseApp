@@ -1,6 +1,7 @@
 package com.enterprise.feature.profile.ui
 
 import androidx.navigation.compose.composable
+import com.enterprise.core.navigation.EditProfileRoute
 import com.enterprise.core.navigation.ProfileRoute
 import com.enterprise.core.navigation.NavGraphBuilderScope
 

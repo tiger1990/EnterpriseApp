@@ -3,8 +3,8 @@ pluginManagement {
     repositories {
         google {
             mavenContent {
-                includeGroupByRegex("com\\.android.*");
-                includeGroupByRegex("com\\.google.*");
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
                 includeGroupByRegex("androidx.*")
             }
         }
@@ -24,8 +24,8 @@ dependencyResolutionManagement {
     repositories {
         google {
             mavenContent {
-                includeGroupByRegex("com\\.android.*");
-                includeGroupByRegex("com\\.google.*");
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
                 includeGroupByRegex("androidx.*")
             }
         }
@@ -49,6 +49,7 @@ include(":core:data")
 include(":core:domain")
 include(":core:navigation")
 include(":core:ui")
+include(":core:tokens")
 include(":core:network")
 include(":core:testing")
 

@@ -1,5 +1,6 @@
 package com.enterprise.baseline
 
+import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.uiautomator.By
@@ -46,8 +47,11 @@ class BaselineProfileGenerator {
 
         // ── Critical journey 2: Home → Detail ────────────────────────────────
         device.findObject(By.text("Item Title 1"))?.click()
-        device.wait(Until.hasObject(By.text("Discover").gone()), 2_000)
+        // Wait for the Home screen element to disappear (indicating transition)
+        device.wait(Until.gone(By.text("Discover")), 2_000)
         device.pressBack()
+        // Wait for Home to be visible again before starting the next journey
+        // waitForHomeScreenReady()
 
         // ── Critical journey 3: Home → Search ────────────────────────────────
         device.findObject(By.desc("Search"))?.click()

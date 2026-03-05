@@ -19,6 +19,12 @@ import dagger.hilt.android.scopes.ActivityRetainedScoped
  *   SavedStateHandle recreates the back-stack and we start fresh.
  * - NOT a Singleton — avoids cross-Activity leaks in multi-Activity apps.
  *
+ * NavigationEventBus is @ActivityRetainedScoped:
+ *  ✅ Survives rotation (ViewModel lifecycle)
+ *  ✅ Destroyed when Activity is finished (no leaks)
+ *  ✅ One instance per Activity — correct for single-Activity apps
+ *  ❌ NOT a Singleton — avoids cross-Activity contamination
+ *
  * Each Activity (and its ViewModels) get their own NavigationEventBus instance.
  */
 @Module

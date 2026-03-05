@@ -9,15 +9,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,12 +29,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.compose.composable
-import com.enterprise.core.navigation.DetailRoute
-import com.enterprise.core.navigation.NavGraphBuilderScope
+import com.enterprise.core.tokens.R
 import com.enterprise.feature.detail.mvi.DetailAction
 import com.enterprise.feature.detail.mvi.DetailEffect
 import com.enterprise.feature.detail.mvi.DetailState
@@ -52,20 +46,20 @@ fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
             when (effect) {
-                is DetailEffect.ShowSnackbar -> snackbarHostState.showSnackbar(effect.message)
+                is DetailEffect.ShowSnackbar -> snackBarHostState.showSnackbar(effect.message)
             }
         }
     }
 
     DetailContent(
-        state        = state,
-        snackbarHost = snackbarHostState,
-        onAction     = viewModel::dispatch,
+        state = state,
+        snackBarHost = snackBarHostState,
+        onAction = viewModel::dispatch,
     )
 }
 
@@ -75,7 +69,7 @@ fun DetailScreen(
 @Composable
 internal fun DetailContent(
     state: DetailState,
-    snackbarHost: SnackbarHostState,
+    snackBarHost: SnackbarHostState,
     onAction: (DetailAction) -> Unit,
 ) {
     Scaffold(
@@ -84,21 +78,23 @@ internal fun DetailContent(
                 title = {
                     // Show title immediately from nav arg — no loading flicker
                     Text(
-                        text     = state.item?.title ?: state.itemTitle,
+                        text = state.item?.title ?: state.itemTitle,
                         maxLines = 1,
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = { onAction(DetailAction.BackPressed) }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_back),
+                            contentDescription = "Back"
+                        )
                     }
                 },
                 actions = {
                     state.item?.let { item ->
                         IconButton(onClick = { onAction(DetailAction.FavouriteToggled) }) {
                             Icon(
-                                imageVector = if (item.isFavourite) Icons.Default.Favorite
-                                else Icons.Default.FavoriteBorder,
+                                painter = painterResource(id = if (item.isFavourite) R.drawable.ic_favorite else R.drawable.ic_heart_broken),
                                 contentDescription = "Toggle favourite",
                                 tint = if (item.isFavourite) MaterialTheme.colorScheme.primary
                                 else MaterialTheme.colorScheme.onSurface,
@@ -108,24 +104,28 @@ internal fun DetailContent(
                 },
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHost) },
+        snackbarHost = { SnackbarHost(snackBarHost) },
     ) { paddingValues ->
 
         AnimatedContent(
             targetState = state,
-            label       = "detail_content",
-            modifier    = Modifier.padding(paddingValues),
+            label = "detail_content",
+            modifier = Modifier.padding(paddingValues),
         ) { s ->
             when {
                 s.isLoading -> Box(Modifier.fillMaxSize(), Alignment.Center) {
                     CircularProgressIndicator()
                 }
+
                 s.errorMessage != null -> Box(
-                    Modifier.fillMaxSize().padding(24.dp),
+                    Modifier
+                        .fillMaxSize()
+                        .padding(24.dp),
                     Alignment.Center,
                 ) {
                     Text(s.errorMessage)
                 }
+
                 s.item != null -> DetailBody(item = s.item)
             }
         }
@@ -145,22 +145,22 @@ private fun DetailBody(
     ) {
         AnimatedVisibility(
             visible = true,
-            enter   = slideInVertically(tween(400)) { -it / 3 } + fadeIn(tween(400)),
+            enter = slideInVertically(tween(400)) { -it / 3 } + fadeIn(tween(400)),
         ) {
             Column {
                 Text(
-                    text  = item.title,
+                    text = item.title,
                     style = MaterialTheme.typography.headlineMedium,
                 )
                 Spacer(Modifier.height(16.dp))
                 Text(
-                    text  = item.description,
+                    text = item.description,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Spacer(Modifier.height(24.dp))
                 Text(
-                    text  = "Item ID: ${item.id}",
+                    text = "Item ID: ${item.id}",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.outline,
                 )

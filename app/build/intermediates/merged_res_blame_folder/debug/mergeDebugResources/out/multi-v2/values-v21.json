@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.enterprise.app-mergeDebugResources-43:/values-v21/values-v21.xml",
+            "map": [
+                {
+                    "source": "/Users/deepakpanwar/.gradle/caches/9.3.1/transforms/7609bd189b9d3ec803aa0218a0f6c49e/transformed/core-1.17.0/res/values-v21/values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,173,237,304,368,484,610,736,864,1036",
+                        "endLines": "2,3,4,5,6,7,8,9,12,17",
+                        "endColumns": "117,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "168,232,299,363,479,605,731,859,1031,1383"
+                    }
+                }
+            ]
+        }
+    ]
+}

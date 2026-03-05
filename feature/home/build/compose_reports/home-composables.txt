@@ -1,0 +1,35 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.HomeScreen(
+  unstable viewModel: HomeViewModel? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.HomeContent(
+  unstable state: HomeState
+  stable snackbarHost: SnackbarHostState
+  stable onAction: Function1<HomeAction, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.HomeTopBar(
+  stable onSearchClick: Function0<Unit>
+  stable onProfileClick: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.HomeTabs(
+  stable selectedIndex: Int
+  stable onTabSelected: Function1<Int, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.ItemList(
+  unstable items: List<Item>
+  stable onItemClick: Function1<Item, Unit>
+  stable onFavouriteToggle: Function1<String, Unit>
+  stable modifier: Modifier? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.ItemCard(
+  unstable item: Item
+  stable onClick: Function0<Unit>
+  stable onFavouriteToggle: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.LoadingState()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.ErrorState(
+  stable message: String
+  unused stable onDismiss: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.EmptyState()
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.HomeContentPreview()

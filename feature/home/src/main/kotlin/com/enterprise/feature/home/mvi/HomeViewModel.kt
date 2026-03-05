@@ -1,7 +1,10 @@
 package com.enterprise.feature.home.mvi
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.enterprise.core.common.mvi.MviViewModel
+import com.enterprise.core.common.mvi.getOrDefault
+import com.enterprise.core.common.mvi.saveTo
 import com.enterprise.core.common.result.Result
 import com.enterprise.core.domain.usecase.ObserveItemsUseCase
 import com.enterprise.core.domain.usecase.ToggleFavouriteUseCase

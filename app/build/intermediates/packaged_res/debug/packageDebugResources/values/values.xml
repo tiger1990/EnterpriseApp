@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#FAF0C2</color>
+    <string name="app_name">Enterprise App</string>
+    <style name="Theme.Enterprise" parent="android:Theme.Material.Light.NoActionBar">
+        
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

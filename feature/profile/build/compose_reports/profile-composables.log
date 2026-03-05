@@ -1,0 +1,1 @@
+applier inference ProfileScreen.kt:50:13: Type disagreement [Binding(78), [Binding(79)], [Binding(token = androidx.compose.ui.UiComposable)], [Binding(80)]] <=> [Binding(78), [Binding(78)], [Binding(78)]]

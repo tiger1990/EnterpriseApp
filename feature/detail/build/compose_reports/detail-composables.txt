@@ -1,0 +1,12 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.detail.ui.DetailScreen(
+  unstable viewModel: DetailViewModel? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.detail.ui.DetailContent(
+  unstable state: DetailState
+  stable snackBarHost: SnackbarHostState
+  stable onAction: Function1<DetailAction, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.detail.ui.DetailBody(
+  unstable item: Item
+  stable modifier: Modifier? = @static <expression>
+)

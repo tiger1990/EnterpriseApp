@@ -1,14 +1,17 @@
 plugins {
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.enterprise.android.library)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
+    //alias(libs.plugins.hilt)
+    //Automatically adds Hilt + Hilt Testing dependencies
+    alias(libs.plugins.enterprise.android.hilt)
+    //alias(libs.plugins.ksp)
+    alias(libs.plugins.enterprise.android.ksp)
 }
 
 android {
     namespace = "com.enterprise.core.data"
-    compileSdk = 36
-    defaultConfig { minSdk = 26 }
+    compileSdk = libs.versions.compileSdk.get().toInt()
+    defaultConfig { minSdk = libs.versions.minSdk.get().toInt() }
 }
 
 dependencies {

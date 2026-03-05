@@ -2,15 +2,15 @@ package com.enterprise.feature.seettings.mvi
 
 import androidx.lifecycle.SavedStateHandle
 import com.enterprise.core.common.mvi.MviViewModel
-import com.enterprise.core.common.result.Result
-import com.enterprise.core.navigation.DetailRoute
+import com.enterprise.core.common.mvi.getOrDefault
+import com.enterprise.core.common.mvi.saveTo
 import com.enterprise.core.navigation.NavigationEvent
 import com.enterprise.core.navigation.NavigationEventBus
-import com.enterprise.core.navigation.ProfileRoute
-import com.enterprise.core.navigation.SearchRoute
+import com.enterprise.feature.settings.mvi.SettingsAction
+import com.enterprise.feature.settings.mvi.SettingsEffect
+import com.enterprise.feature.settings.mvi.SettingsReducer
+import com.enterprise.feature.settings.mvi.SettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 // ═══════════════════════════ ViewModel ════════════════════════════════════════
@@ -38,7 +38,6 @@ class SettingsViewModel @Inject constructor(
             }
             SettingsAction.BackPressed    -> navigate(NavigationEvent.NavigateUp)
             SettingsAction.ClearCacheClicked -> emitEffect(SettingsEffect.ShowSnackbar("Cache cleared"))
-            else -> Unit
         }
     }
 

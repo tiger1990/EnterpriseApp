@@ -1,11 +1,11 @@
 plugins {
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.enterprise.android.library)
 }
 
 android {
     namespace = "com.enterprise.core.domain"
-    compileSdk = 36
-    defaultConfig { minSdk = 26 }
+    compileSdk = libs.versions.compileSdk.get().toInt()
+    defaultConfig { minSdk = libs.versions.minSdk.get().toInt() }
 }
 
 dependencies {

@@ -1,11 +1,9 @@
-package com.enterprise.feature.settings
+package com.enterprise.feature.settings.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -19,24 +17,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.compose.composable
-import com.enterprise.core.common.mvi.MviViewModel
-import com.enterprise.core.common.mvi.Reducer
-import com.enterprise.core.common.mvi.UiAction
-import com.enterprise.core.common.mvi.UiEffect
-import com.enterprise.core.common.mvi.UiState
-import com.enterprise.core.navigation.NavGraphBuilderScope
-import com.enterprise.core.navigation.NavigationEvent
-import com.enterprise.core.navigation.NavigationEventBus
-import com.enterprise.core.navigation.SettingsRoute
+import com.enterprise.core.tokens.R
 import com.enterprise.feature.seettings.mvi.SettingsViewModel
 import com.enterprise.feature.settings.mvi.SettingsAction
 import com.enterprise.feature.settings.mvi.SettingsState
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 // ═══════════════════════════ UI ═══════════════════════════════════════════════
 
@@ -58,7 +46,10 @@ internal fun SettingsContent(
                 title = { Text("Settings") },
                 navigationIcon = {
                     IconButton(onClick = { onAction(SettingsAction.BackPressed) }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_back),
+                            contentDescription = "Back"
+                        )
                     }
                 },
             )

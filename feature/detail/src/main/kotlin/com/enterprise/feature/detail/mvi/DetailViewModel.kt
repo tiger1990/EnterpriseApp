@@ -2,17 +2,14 @@ package com.enterprise.feature.detail.mvi
 
 import androidx.lifecycle.SavedStateHandle
 import com.enterprise.core.common.mvi.MviViewModel
+import com.enterprise.core.common.mvi.getOrDefault
 import com.enterprise.core.common.result.Result
-import com.enterprise.core.domain.usecase.ObserveItemsUseCase
+import com.enterprise.core.domain.usecase.GetItemUseCase
 import com.enterprise.core.domain.usecase.ToggleFavouriteUseCase
 import com.enterprise.core.navigation.DetailRoute
 import com.enterprise.core.navigation.NavigationEvent
 import com.enterprise.core.navigation.NavigationEventBus
-import com.enterprise.core.navigation.ProfileRoute
-import com.enterprise.core.navigation.SearchRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 // ─── ViewModel ────────────────────────────────────────────────────────────────

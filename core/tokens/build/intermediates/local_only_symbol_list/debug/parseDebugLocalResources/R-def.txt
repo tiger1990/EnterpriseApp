@@ -1,0 +1,9 @@
+R_DEF: Internal format may change without notice
+local
+drawable ic_arrow_back
+drawable ic_clear
+drawable ic_edit_profile
+drawable ic_favorite
+drawable ic_heart_broken
+drawable ic_person
+drawable ic_search

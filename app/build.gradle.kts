@@ -1,28 +1,29 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.enterprise.android.application)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
-
     alias(libs.plugins.enterprise.android.application.compose)
+    //Automatically adds Hilt + Hilt Testing dependencies
     alias(libs.plugins.enterprise.android.hilt)
     alias(libs.plugins.enterprise.android.application.baselineprofile)
+    alias(libs.plugins.enterprise.android.ksp)
 }
 
 android {
-    namespace = "com.example.enterprisenav3app"
-    compileSdk = 36
+    namespace = "com.enterprise.app"
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.enterprise.app"
-        minSdk = 26
-        targetSdk = 36
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
         // Enable deep link intent filters
         manifestPlaceholders["appDeepLinkScheme"] = "enterprise"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.enterprise.app.testing.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -55,32 +56,24 @@ android {
         }
     }
 
-//    // Baseline profile DSL
-//    // baselineProfile.automaticGenerationDuringBuild = false
-//    baselineProfile {
-//        // Merges profiles from all variants into src/main/generated/baselineProfiles
-//        mergeIntoMain = true
-//        automaticGenerationDuringBuild = false
-//    }
-
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 
-    android.sourceSets {
-        getByName("main") {
-            // AGP handles the merging of Kotlin and Java sources here
-            kotlin.directories.add("build/generated/ksp/debug/kotlin")
-            java.directories.add("build/generated/ksp/debug/java")
-        }
-        getByName("debug") {
-            // AGP handles the merging of Kotlin and Java sources here
-            kotlin.directories.add("build/generated/ksp/debug/kotlin")
-            java.directories.add("build/generated/ksp/debug/java")
-        }
-    }
+//    sourceSets {
+//        getByName("debug") {
+//            // AGP handles the merging of Kotlin and Java sources here
+//            kotlin.directories.add("build/generated/ksp/debug/kotlin")
+//            java.directories.add("build/generated/ksp/debug/java")
+//        }
+//        getByName("release") {
+//            // AGP handles the merging of Kotlin and Java sources here
+//            kotlin.directories.add("build/generated/ksp/debug/kotlin")
+//            java.directories.add("build/generated/ksp/debug/java")
+//        }
+//    }
 }
 
 // Baseline profile DSL
@@ -91,9 +84,6 @@ baselineProfile {
 }
 
 dependencies {
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-
     // Feature modules
     implementation(project(":feature:home"))
     implementation(project(":feature:detail"))
@@ -119,7 +109,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
     androidTestImplementation(libs.androidx.compose.ui.test)
-    androidTestImplementation(libs.hilt.testing)
 
     // Required to install profiles on devices without Play Services
     implementation(libs.androidx.profileinstaller)

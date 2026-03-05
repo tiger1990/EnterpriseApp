@@ -11,3 +11,7 @@ plugins {
     alias(libs.plugins.baseline.profile)        apply false
     alias(libs.plugins.paparazzi)               apply false
 }
+
+tasks.register<Delete>("clean") {
+    delete(rootProject.layout.buildDirectory)
+}

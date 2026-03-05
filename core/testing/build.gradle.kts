@@ -4,8 +4,8 @@ plugins {
 
 android {
     namespace = "com.enterprise.core.testing"
-    compileSdk = 36
-    defaultConfig { minSdk = 26 }
+    compileSdk = libs.versions.compileSdk.get().toInt()
+    defaultConfig { minSdk = libs.versions.minSdk.get().toInt() }
 }
 
 dependencies {

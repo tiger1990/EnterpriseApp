@@ -1,0 +1,4 @@
+package,name,composable,skippable,restartable,readonly,inline,isLambda,hasDefaults,defaultsGroup,groups,calls,
+com.enterprise.feature.profile.ui.ProfileScreen,ProfileScreen,1,1,1,0,0,0,1,0,2,3,
+com.enterprise.feature.profile.ui.ProfileContent,ProfileContent,1,1,1,0,0,0,0,0,1,4,
+com.enterprise.feature.profile.ui.ProfileBody,ProfileBody,1,1,1,0,0,0,0,0,1,1,

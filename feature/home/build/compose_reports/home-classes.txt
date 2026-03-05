@@ -1,0 +1,59 @@
+unstable class com.enterprise.feature.home.mvi.HomeState {
+  unstable val items: List<Item>
+  stable val isLoading: Boolean
+  stable val isRefreshing: Boolean
+  stable val errorMessage: String?
+  stable val selectedTabIndex: Int
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.home.mvi.HomeAction.LoadItems {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.home.mvi.HomeAction.RefreshItems {
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.home.mvi.HomeAction.ItemClicked {
+  unstable val item: Item
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.home.mvi.HomeAction.FavouriteToggled {
+  stable val itemId: String
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.home.mvi.HomeAction.SearchClicked {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.home.mvi.HomeAction.ProfileClicked {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.home.mvi.HomeAction.TabSelected {
+  stable val index: Int
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.home.mvi.HomeAction.ErrorDismissed {
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.home.mvi.HomeAction.ItemsLoaded {
+  unstable val items: List<Item>
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.home.mvi.HomeAction.ItemsLoadFailed {
+  stable val message: String
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.home.mvi.HomeAction.FavouriteUpdated {
+  unstable val item: Item
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.home.mvi.HomeEffect.ShowSnackbar {
+  stable val message: String
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.home.mvi.HomeReducer {
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.home.mvi.HomeViewModel {
+  unstable val observeItems: ObserveItemsUseCase
+  unstable val toggleFavourite: ToggleFavouriteUseCase
+  <runtime stability> = Unstable
+}

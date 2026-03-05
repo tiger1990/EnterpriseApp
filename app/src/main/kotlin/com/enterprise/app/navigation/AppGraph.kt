@@ -3,9 +3,9 @@ package com.enterprise.app.navigation
 import com.enterprise.core.navigation.NavGraphBuilderScope
 import com.enterprise.feature.detail.ui.detailGraph
 import com.enterprise.feature.home.ui.homeGraph
-import com.enterprise.feature.profile.profileGraph
-import com.enterprise.feature.search.searchGraph
-import com.enterprise.feature.settings.settingsGraph
+import com.enterprise.feature.profile.ui.profileGraph
+import com.enterprise.feature.search.ui.searchGraph
+import com.enterprise.feature.settings.ui.settingsGraph
 
 /**
  * AppGraph assembles all feature navigation graphs.

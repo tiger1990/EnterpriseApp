@@ -1,0 +1,12 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.profile.ui.ProfileScreen(
+  unstable viewModel: ProfileViewModel? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.profile.ui.ProfileContent(
+  unstable state: ProfileState
+  stable onAction: Function1<ProfileAction, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.profile.ui.ProfileBody(
+  unstable profile: UserProfile
+  stable onSettings: Function0<Unit>
+  stable modifier: Modifier? = @static <expression>
+)

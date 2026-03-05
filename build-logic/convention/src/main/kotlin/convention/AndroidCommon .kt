@@ -8,7 +8,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.LibraryExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 // 1. Define a shared function for the properties STILL in CommonExtension
 internal fun CommonExtension.configureSharedAndroid() {
@@ -26,8 +25,8 @@ internal fun Project.configureAndroidBase(commonExtension: CommonExtension) {
         tasks.withType<KotlinCompile>().configureEach {
             // compilerOptions: This is the type-safe DSL introduced to replace the old kotlinOptions.
             compilerOptions { // Replaces kotlinOptions
-                // jvmTarget.set(): The new API uses Gradle Properties, so you use .set() instead of =.
                 // Instead of passing a string like "17", you now use the JvmTarget enum for better compile-time safety.
+                // jvmTarget.set(): The new API uses Gradle Properties, so you use .set() instead of =.
                 jvmTarget.set(JvmTarget.JVM_17) // Use the JvmTarget enum instead of a string
                 // languageVersion.set(KotlinVersion.KOTLIN_2_1)
                 // freeCompilerArgs is now a ListProperty,
@@ -49,12 +48,19 @@ internal fun Project.configureAppModule(extension: ApplicationExtension) {
     extension.apply {
         configureAndroidBase(extension)
         defaultConfig {
-            minSdk = 26
+            minSdk = 28
             testInstrumentationRunner = "com.enterprise.app.testing.HiltTestRunner"
         }
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
+        }
+        testOptions{
+            unitTests.isIncludeAndroidResources = true
+            unitTests.isReturnDefaultValues = true
+        }
+        buildFeatures{
+            buildConfig = true
         }
     }
 }
@@ -64,11 +70,18 @@ internal fun Project.configureLibraryModule(extension: LibraryExtension) {
     extension.apply {
         configureAndroidBase(extension)
         defaultConfig {
-            minSdk = 26
+            minSdk = 28
         }
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
+        }
+        testOptions{
+            unitTests.isIncludeAndroidResources = true
+            unitTests.isReturnDefaultValues = true
+        }
+        buildFeatures{
+            buildConfig = true
         }
     }
 }

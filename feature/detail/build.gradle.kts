@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.enterprise.android.feature)
-    id("app.cash.paparazzi")
+    alias(libs.plugins.paparazzi)
+    alias(libs.plugins.enterprise.android.ksp)
 }
 
 android {

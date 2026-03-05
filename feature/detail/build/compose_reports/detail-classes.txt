@@ -1,0 +1,49 @@
+unstable class com.enterprise.feature.detail.mvi.DetailState {
+  stable val itemId: String
+  stable val itemTitle: String
+  unstable val item: Item?
+  stable val isLoading: Boolean
+  stable val errorMessage: String?
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.detail.mvi.DetailAction.Initialize {
+  stable val itemId: String
+  stable val itemTitle: String
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.detail.mvi.DetailAction.LoadItem {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.detail.mvi.DetailAction.FavouriteToggled {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.detail.mvi.DetailAction.BackPressed {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.detail.mvi.DetailAction.ErrorDismissed {
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.detail.mvi.DetailAction.ItemLoaded {
+  unstable val item: Item
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.detail.mvi.DetailAction.LoadFailed {
+  stable val message: String
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.detail.mvi.DetailAction.FavouriteUpdated {
+  unstable val item: Item
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.detail.mvi.DetailEffect.ShowSnackbar {
+  stable val message: String
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.detail.mvi.DetailReducer {
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.detail.mvi.DetailViewModel {
+  unstable val getItem: GetItemUseCase
+  unstable val toggleFavourite: ToggleFavouriteUseCase
+  <runtime stability> = Unstable
+}

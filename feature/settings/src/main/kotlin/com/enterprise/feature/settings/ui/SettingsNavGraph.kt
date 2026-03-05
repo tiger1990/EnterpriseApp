@@ -1,6 +1,7 @@
-package com.enterprise.feature.home.ui
+package com.enterprise.feature.settings.ui
 
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import com.enterprise.core.navigation.SettingsRoute
 import com.enterprise.core.navigation.NavGraphBuilderScope
 
@@ -9,7 +10,7 @@ import com.enterprise.core.navigation.NavGraphBuilderScope
 fun NavGraphBuilderScope.settingsGraph() {
     builder.composable<SettingsRoute>(
         deepLinks = listOf(
-            androidx.navigation.navDeepLink { uriPattern = SettingsRoute.DEEP_LINK_URI }
+            navDeepLink { uriPattern = SettingsRoute.DEEP_LINK_URI }
         ),
     ) {
         SettingsScreen()

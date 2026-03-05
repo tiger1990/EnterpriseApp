@@ -1,7 +1,7 @@
 package com.enterprise.feature.detail.ui
 
 import androidx.navigation.compose.composable
-import com.enterprise.core.navigation.HomeRoute
+import com.enterprise.core.navigation.DetailRoute
 import com.enterprise.core.navigation.NavGraphBuilderScope
 
 

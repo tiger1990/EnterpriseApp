@@ -2,12 +2,13 @@ plugins {
     alias(libs.plugins.enterprise.android.library)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.enterprise.android.hilt)
+    alias(libs.plugins.enterprise.android.ksp)
 }
 
 android {
     namespace = "com.enterprise.core.network"
-    compileSdk = 36
-    defaultConfig { minSdk = 26 }
+    compileSdk = libs.versions.compileSdk.get().toInt()
+    defaultConfig { minSdk = libs.versions.minSdk.get().toInt() }
 }
 
 dependencies {

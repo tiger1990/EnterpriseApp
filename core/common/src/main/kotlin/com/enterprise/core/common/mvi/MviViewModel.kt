@@ -17,8 +17,8 @@ import kotlinx.coroutines.launch
  * Base ViewModel enforcing strict MVI.
  *
  * ─── Process Death Restoration ───────────────────────────────────────────────
- * Subclasses receive [savedStateHandle] and call [saveStateToHandle] /
- * [restoreStateFromHandle] to persist critical state across process death.
+ * Subclasses receive [savedStateHandle] and call [saveTo] /
+ * [getOrDefault] to persist critical state across process death.
  * Only lightweight, parcelable/serializable fields should be saved.
  *
  * ─── Navigation ──────────────────────────────────────────────────────────────
@@ -59,6 +59,10 @@ abstract class MviViewModel<S : UiState, A : UiAction, E : UiEffect>(
      * Entry point for all user-initiated and system-initiated actions.
      * Calls the pure reducer synchronously, then runs middleware asynchronously.
      */
+    /**
+     * Entry point for all user-initiated and system-initiated actions.
+     * Calls the pure reducer synchronously, then runs middleware asynchronously.
+     */
     fun dispatch(action: A) {
         // 1. Synchronously compute new state via pure reducer
         _state.update { currentState -> reducer.reduce(currentState, action) }
@@ -86,23 +90,25 @@ abstract class MviViewModel<S : UiState, A : UiAction, E : UiEffect>(
     protected suspend fun navigate(event: NavigationEvent) {
         navigationBus.send(event)
     }
-
-    // ─── Process Death ────────────────────────────────────────────────────────
-
-    /**
-     * Save lightweight state to SavedStateHandle for process-death restoration.
-     * Called by subclasses; typically in init{} after restoring state.
-     *
-     * Only save what's needed to restore the screen — IDs, queries, scroll
-     * position. Do NOT save full lists (re-fetch from repository instead).
-     */
-    protected fun <T> SavedStateHandle.saveTo(key: String, value: T) {
-        this[key] = value
-    }
-
-    /**
-     * Convenience to get a value from SavedStateHandle or use a default.
-     */
-    protected fun <T> SavedStateHandle.getOrDefault(key: String, default: T): T =
-        get<T>(key) ?: default
 }
+
+// ─── Process Death ────────────────────────────────────────────────────────
+
+/**
+ * Save lightweight state to SavedStateHandle for process-death restoration.
+ * Called by subclasses; typically in init{} after restoring state.
+ *
+ * Only save what's needed to restore the screen — IDs, queries, scroll
+ * position. Do NOT save full lists (re-fetch from repository instead).
+ */
+fun <T> SavedStateHandle.saveTo(key: String, value: T) {
+    this[key] = value
+}
+
+/**
+ * Convenience to get a value from SavedStateHandle or use a default.
+ * removed protected
+ */
+fun <T> SavedStateHandle.getOrDefault(key: String, default: T): T =
+    get<T>(key) ?: default
+// ─── Process Death ────────────────────────────────────────────────────────
