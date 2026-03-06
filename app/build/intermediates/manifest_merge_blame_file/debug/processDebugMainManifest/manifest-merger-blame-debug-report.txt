@@ -24,7 +24,7 @@
 17-->[androidx.core:core:1.17.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/7609bd189b9d3ec803aa0218a0f6c49e/transformed/core-1.17.0/AndroidManifest.xml:26:22-94
 18
 19    <application
-19-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:6:5-47:19
+19-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:6:5-60:19
 20        android:name="com.enterprise.app.EnterpriseApplication"
 20-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:7:9-64
 21        android:allowBackup="true"
@@ -45,7 +45,7 @@
 30        android:theme="@style/Theme.Enterprise" >
 30-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:13:9-48
 31        <activity
-31-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:15:9-46:20
+31-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:15:9-59:20
 32            android:name="com.enterprise.app.ui.MainActivity"
 32-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:16:13-62
 33            android:exported="true"
@@ -76,134 +76,159 @@
 51                Nav3 handles deep link routing automatically when
 52                navDeepLink { uriPattern = ... } is declared in composable().
 53            -->
-54            <intent-filter android:autoVerify="true" >
-54-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:37:13-45:29
-54-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:37:28-53
-55                <action android:name="android.intent.action.VIEW" />
-55-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:38:17-69
-55-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:38:25-66
-56
-57                <category android:name="android.intent.category.DEFAULT" />
-57-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:39:17-76
-57-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:39:27-73
-58                <category android:name="android.intent.category.BROWSABLE" />
-58-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:40:17-78
-58-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:40:27-75
-59
-60                <data android:scheme="http" />
-60-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:41:17-47
-60-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:41:23-44
-61                <data android:scheme="https" />
-61-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:41:17-47
-61-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:41:23-44
-62                <data android:scheme="enterprise" />
-62-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:41:17-47
-62-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:41:23-44
-63                <data android:host="*" />
-63-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:41:17-47
-63-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:44:23-39
+54            <!-- Custom scheme deep link -->
+55            <intent-filter>
+55-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:38:13-43:29
+56                <action android:name="android.intent.action.VIEW" />
+56-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:39:17-69
+56-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:39:25-66
+57
+58                <category android:name="android.intent.category.DEFAULT" />
+58-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:40:17-76
+58-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:40:27-73
+59                <category android:name="android.intent.category.BROWSABLE" />
+59-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:41:17-78
+59-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:41:27-75
+60
+61                <data
+61-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:42:17-70
+62                    android:host="*"
+62-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:42:51-67
+63                    android:scheme="enterprise" />
+63-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:42:23-50
 64            </intent-filter>
-65        </activity>
-66        <activity
-66-->[androidx.compose.ui:ui-tooling-android:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/0c54c2b6dfd05e6289c99d9560084d41/transformed/ui-tooling/AndroidManifest.xml:23:9-25:39
-67            android:name="androidx.compose.ui.tooling.PreviewActivity"
-67-->[androidx.compose.ui:ui-tooling-android:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/0c54c2b6dfd05e6289c99d9560084d41/transformed/ui-tooling/AndroidManifest.xml:24:13-71
-68            android:exported="true" />
-68-->[androidx.compose.ui:ui-tooling-android:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/0c54c2b6dfd05e6289c99d9560084d41/transformed/ui-tooling/AndroidManifest.xml:25:13-36
-69
-70        <uses-library
-70-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:23:9-25:40
-71            android:name="androidx.window.extensions"
-71-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:24:13-54
-72            android:required="false" />
-72-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:25:13-37
-73        <uses-library
-73-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:26:9-28:40
-74            android:name="androidx.window.sidecar"
-74-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:27:13-51
-75            android:required="false" />
-75-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:28:13-37
-76
-77        <provider
-77-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:24:9-32:20
-78            android:name="androidx.startup.InitializationProvider"
-78-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:25:13-67
-79            android:authorities="com.enterprise.app.debug.androidx-startup"
-79-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:26:13-68
-80            android:exported="false" >
-80-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:27:13-37
-81            <meta-data
-81-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:29:13-31:52
-82                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-82-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:30:17-75
-83                android:value="androidx.startup" />
-83-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:31:17-49
-84            <meta-data
-84-->[androidx.lifecycle:lifecycle-process:2.10.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/f5026fa97c8fe9bcc4718f4009e8a58b/transformed/lifecycle-process-2.10.0/AndroidManifest.xml:29:13-31:52
-85                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-85-->[androidx.lifecycle:lifecycle-process:2.10.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/f5026fa97c8fe9bcc4718f4009e8a58b/transformed/lifecycle-process-2.10.0/AndroidManifest.xml:30:17-78
-86                android:value="androidx.startup" />
-86-->[androidx.lifecycle:lifecycle-process:2.10.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/f5026fa97c8fe9bcc4718f4009e8a58b/transformed/lifecycle-process-2.10.0/AndroidManifest.xml:31:17-49
-87            <meta-data
-87-->[com.squareup.okhttp3:okhttp-android:5.3.2] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9003d3c93eb698092b943d36029c2257/transformed/okhttp-release/AndroidManifest.xml:16:13-18:52
-88                android:name="okhttp3.internal.platform.PlatformInitializer"
-88-->[com.squareup.okhttp3:okhttp-android:5.3.2] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9003d3c93eb698092b943d36029c2257/transformed/okhttp-release/AndroidManifest.xml:17:17-77
-89                android:value="androidx.startup" />
-89-->[com.squareup.okhttp3:okhttp-android:5.3.2] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9003d3c93eb698092b943d36029c2257/transformed/okhttp-release/AndroidManifest.xml:18:17-49
-90            <meta-data
-90-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:29:13-31:52
-91                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-91-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:30:17-85
-92                android:value="androidx.startup" />
-92-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:31:17-49
-93        </provider>
-94
-95        <activity
-95-->[androidx.compose.ui:ui-test-manifest:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a9361c061295b34a4e73307afbada7a2/transformed/ui-test-manifest-1.10.4/AndroidManifest.xml:23:9-26:79
-96            android:name="androidx.activity.ComponentActivity"
-96-->[androidx.compose.ui:ui-test-manifest:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a9361c061295b34a4e73307afbada7a2/transformed/ui-test-manifest-1.10.4/AndroidManifest.xml:24:13-63
-97            android:exported="true"
-97-->[androidx.compose.ui:ui-test-manifest:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a9361c061295b34a4e73307afbada7a2/transformed/ui-test-manifest-1.10.4/AndroidManifest.xml:25:13-36
-98            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
-98-->[androidx.compose.ui:ui-test-manifest:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a9361c061295b34a4e73307afbada7a2/transformed/ui-test-manifest-1.10.4/AndroidManifest.xml:26:13-76
-99
-100        <receiver
-100-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:34:9-52:20
-101            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-101-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:35:13-76
-102            android:directBootAware="false"
-102-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:36:13-44
-103            android:enabled="true"
-103-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:37:13-35
-104            android:exported="true"
-104-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:38:13-36
-105            android:permission="android.permission.DUMP" >
-105-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:39:13-57
-106            <intent-filter>
-106-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:40:13-42:29
-107                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-107-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:41:17-91
-107-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:41:25-88
-108            </intent-filter>
-109            <intent-filter>
-109-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:43:13-45:29
-110                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-110-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:44:17-85
-110-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:44:25-82
-111            </intent-filter>
-112            <intent-filter>
-112-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:46:13-48:29
-113                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-113-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:47:17-88
-113-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:47:25-85
-114            </intent-filter>
-115            <intent-filter>
-115-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:49:13-51:29
-116                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-116-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:50:17-95
-116-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:50:25-92
-117            </intent-filter>
-118        </receiver>
-119    </application>
-120
-121</manifest>
+65
+66            <!-- Web deep links (HTTP/HTTPS) -->
+67            <!--
+68                 Note: android:autoVerify="true" requires a valid domain.
+69                 Wildcard "*" is not allowed for App Links.
+70                 Replace "www.example.com" with your actual domain.
+71            -->
+72            <intent-filter android:autoVerify="true" >
+72-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:51:13-58:29
+72-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:51:28-53
+73                <action android:name="android.intent.action.VIEW" />
+73-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:39:17-69
+73-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:39:25-66
+74
+75                <category android:name="android.intent.category.DEFAULT" />
+75-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:40:17-76
+75-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:40:27-73
+76                <category android:name="android.intent.category.BROWSABLE" />
+76-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:41:17-78
+76-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:41:27-75
+77
+78                <data android:scheme="http" />
+78-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:42:17-70
+78-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:42:23-50
+79                <data android:scheme="https" />
+79-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:42:17-70
+79-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:42:23-50
+80                <data android:host="www.travelmonk.com" />
+80-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:42:17-70
+80-->/Users/deepakpanwar/Documents/004_PersonalDev/EnterpriseApp/app/src/main/AndroidManifest.xml:42:51-67
+81            </intent-filter>
+82        </activity>
+83        <activity
+83-->[androidx.compose.ui:ui-tooling-android:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/0c54c2b6dfd05e6289c99d9560084d41/transformed/ui-tooling/AndroidManifest.xml:23:9-25:39
+84            android:name="androidx.compose.ui.tooling.PreviewActivity"
+84-->[androidx.compose.ui:ui-tooling-android:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/0c54c2b6dfd05e6289c99d9560084d41/transformed/ui-tooling/AndroidManifest.xml:24:13-71
+85            android:exported="true" />
+85-->[androidx.compose.ui:ui-tooling-android:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/0c54c2b6dfd05e6289c99d9560084d41/transformed/ui-tooling/AndroidManifest.xml:25:13-36
+86
+87        <uses-library
+87-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:23:9-25:40
+88            android:name="androidx.window.extensions"
+88-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:24:13-54
+89            android:required="false" />
+89-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:25:13-37
+90        <uses-library
+90-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:26:9-28:40
+91            android:name="androidx.window.sidecar"
+91-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:27:13-51
+92            android:required="false" />
+92-->[androidx.window:window:1.5.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a93cd0ec816b1ccf19cbb2762606f4a6/transformed/window-1.5.0/AndroidManifest.xml:28:13-37
+93
+94        <provider
+94-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:24:9-32:20
+95            android:name="androidx.startup.InitializationProvider"
+95-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:25:13-67
+96            android:authorities="com.enterprise.app.debug.androidx-startup"
+96-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:26:13-68
+97            android:exported="false" >
+97-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:27:13-37
+98            <meta-data
+98-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:29:13-31:52
+99                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+99-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:30:17-75
+100                android:value="androidx.startup" />
+100-->[androidx.emoji2:emoji2:1.4.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9d461855b4f83992c70cf51e9a02269d/transformed/emoji2-1.4.0/AndroidManifest.xml:31:17-49
+101            <meta-data
+101-->[androidx.lifecycle:lifecycle-process:2.10.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/f5026fa97c8fe9bcc4718f4009e8a58b/transformed/lifecycle-process-2.10.0/AndroidManifest.xml:29:13-31:52
+102                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+102-->[androidx.lifecycle:lifecycle-process:2.10.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/f5026fa97c8fe9bcc4718f4009e8a58b/transformed/lifecycle-process-2.10.0/AndroidManifest.xml:30:17-78
+103                android:value="androidx.startup" />
+103-->[androidx.lifecycle:lifecycle-process:2.10.0] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/f5026fa97c8fe9bcc4718f4009e8a58b/transformed/lifecycle-process-2.10.0/AndroidManifest.xml:31:17-49
+104            <meta-data
+104-->[com.squareup.okhttp3:okhttp-android:5.3.2] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9003d3c93eb698092b943d36029c2257/transformed/okhttp-release/AndroidManifest.xml:16:13-18:52
+105                android:name="okhttp3.internal.platform.PlatformInitializer"
+105-->[com.squareup.okhttp3:okhttp-android:5.3.2] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9003d3c93eb698092b943d36029c2257/transformed/okhttp-release/AndroidManifest.xml:17:17-77
+106                android:value="androidx.startup" />
+106-->[com.squareup.okhttp3:okhttp-android:5.3.2] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/9003d3c93eb698092b943d36029c2257/transformed/okhttp-release/AndroidManifest.xml:18:17-49
+107            <meta-data
+107-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:29:13-31:52
+108                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+108-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:30:17-85
+109                android:value="androidx.startup" />
+109-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:31:17-49
+110        </provider>
+111
+112        <activity
+112-->[androidx.compose.ui:ui-test-manifest:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a9361c061295b34a4e73307afbada7a2/transformed/ui-test-manifest-1.10.4/AndroidManifest.xml:23:9-26:79
+113            android:name="androidx.activity.ComponentActivity"
+113-->[androidx.compose.ui:ui-test-manifest:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a9361c061295b34a4e73307afbada7a2/transformed/ui-test-manifest-1.10.4/AndroidManifest.xml:24:13-63
+114            android:exported="true"
+114-->[androidx.compose.ui:ui-test-manifest:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a9361c061295b34a4e73307afbada7a2/transformed/ui-test-manifest-1.10.4/AndroidManifest.xml:25:13-36
+115            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+115-->[androidx.compose.ui:ui-test-manifest:1.10.4] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a9361c061295b34a4e73307afbada7a2/transformed/ui-test-manifest-1.10.4/AndroidManifest.xml:26:13-76
+116
+117        <receiver
+117-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:34:9-52:20
+118            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+118-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:35:13-76
+119            android:directBootAware="false"
+119-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:36:13-44
+120            android:enabled="true"
+120-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:37:13-35
+121            android:exported="true"
+121-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:38:13-36
+122            android:permission="android.permission.DUMP" >
+122-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:39:13-57
+123            <intent-filter>
+123-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:40:13-42:29
+124                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+124-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:41:17-91
+124-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:41:25-88
+125            </intent-filter>
+126            <intent-filter>
+126-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:43:13-45:29
+127                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+127-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:44:17-85
+127-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:44:25-82
+128            </intent-filter>
+129            <intent-filter>
+129-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:46:13-48:29
+130                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+130-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:47:17-88
+130-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:47:25-85
+131            </intent-filter>
+132            <intent-filter>
+132-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:49:13-51:29
+133                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+133-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:50:17-95
+133-->[androidx.profileinstaller:profileinstaller:1.4.1] /Users/deepakpanwar/.gradle/caches/9.3.1/transforms/a35c08eed2777ee3c31026fb09084580/transformed/profileinstaller-1.4.1/AndroidManifest.xml:50:25-92
+134            </intent-filter>
+135        </receiver>
+136    </application>
+137
+138</manifest>

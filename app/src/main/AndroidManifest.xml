@@ -34,14 +34,27 @@
                 Nav3 handles deep link routing automatically when
                 navDeepLink { uriPattern = ... } is declared in composable().
             -->
+            <!-- Custom scheme deep link -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="enterprise" android:host="*" />
+            </intent-filter>
+
+            <!-- Web deep links (HTTP/HTTPS) -->
+            <!--
+                 Note: android:autoVerify="true" requires a valid domain.
+                 Wildcard "*" is not allowed for App Links.
+                 Replace "www.example.com" with your actual domain.
+            -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:scheme="enterprise" />
-                <data android:host="*" />
+                <data android:host="www.travelmonk.com" />
             </intent-filter>
         </activity>
     </application>
