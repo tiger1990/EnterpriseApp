@@ -1,5 +1,6 @@
 int drawable ic_arrow_back 0x0
 int drawable ic_clear 0x0
+int drawable ic_compass_calibration 0x0
 int drawable ic_edit_profile 0x0
 int drawable ic_favorite 0x0
 int drawable ic_heart_broken 0x0

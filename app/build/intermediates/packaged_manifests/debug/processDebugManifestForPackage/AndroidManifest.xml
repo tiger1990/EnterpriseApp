@@ -29,16 +29,26 @@
         android:testOnly="true"
         android:theme="@style/Theme.Enterprise" >
         <activity
-            android:name="com.enterprise.app.ui.MainActivity"
+            android:name="com.enterprise.app.ui.TestUiActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" >
-
-            <!-- Standard launcher -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.enterprise.app.ui.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" >
+
+            <!-- Standard launcher -->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+
 
             <!--
                 Deep link: enterprise://home

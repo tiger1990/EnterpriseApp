@@ -1,13 +1,42 @@
-restartable skippable scheme("[0, [0]]") fun com.enterprise.app.theme.EnterpriseTheme(
-  stable darkTheme: Boolean = @dynamic <expression>
-  stable content: Function2<Composer, Int, Unit>
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.app.testui.GoalRingScreen(
+  stable modifier: Modifier? = @static <expression>
+  stable goalAmount: Long = @static 10000000L
+  stable stepAmount: Long = @static 100000L
 )
-restartable skippable scheme("[0, [0]]") fun com.enterprise.app.theme.EnterpriseThemeV1(
-  stable darkTheme: Boolean = @dynamic <expression>
-  stable dynamicColor: Boolean = @static true
-  stable content: Function2<Composer, Int, Unit>
-)
-restartable skippable fun com.enterprise.app.ui.EnterpriseApp(
-  navigationEventBus: NavigationEventBus
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.app.testui.GoalRing(
+  stable progress: Float
+  stable onProgressChange: Function1<Float, Unit>
   stable modifier: Modifier? = @static <expression>
 )
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.app.testui.HeaderBlock(
+  stable t: String
+  stable s: String
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.app.testui.AmountRow(
+  stable ll: String
+  stable lv: String
+  stable rl: String
+  stable rv: String
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.app.testui.LinearMeta(
+  stable p: Float
+  stable a: Long
+  stable g: Long
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.app.testui.MetaChip(
+  stable l: String
+  stable v: String
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.app.testui.TipCard(
+  stable tip: Tip
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.app.testui.FooterCTA(
+  stable onRandomize: Function0<Unit>
+  stable onReset: Function0<Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.app.testui.ConfettiOverlay(
+  stable key: Int
+  stable enabled: Boolean
+  stable modifier: Modifier
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.app.testui.PreviewGoal()

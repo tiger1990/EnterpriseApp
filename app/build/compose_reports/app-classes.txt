@@ -1,10 +1,25 @@
-unstable class com.enterprise.app.EnterpriseApplication {
-  <runtime stability> = Unstable
-}
-stable class com.enterprise.app.di.ActivityModule {
-  <runtime stability> = Stable
-}
-unstable class com.enterprise.app.ui.MainActivity {
-  runtime var navigationEventBus: NavigationEventBus
+unstable class com.enterprise.app.testui.TravelGoalsColors {
+  stable val trackColor: Color
+  stable val glowColor: Color
+  unstable val progressGradient: List<Color>
+  stable val MonkOrange: Color
+  stable val Sunset: Color
+  stable val tipCardBackground: Color
+  stable val tipTitleColor: Color
+  stable val tipBodyColor: Color
+  stable val backgroundStart: Color
+  stable val backgroundMid1: Color
+  stable val backgroundMid2: Color
+  stable val backgroundMid3: Color
+  stable val backgroundMid4: Color
+  stable val backgroundEnd: Color
+  stable val surfaceColor: Color
+  stable val textPrimary: Color
+  stable val textSecondary: Color
+  stable val textLabel: Color
+  stable val textValue: Color
+  stable val linearTrack: Color
+  stable val linearProgress: Color
+  stable val metaChipBackground: Color
   <runtime stability> = Unstable
 }
