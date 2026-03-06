@@ -1,0 +1,5 @@
+package,name,composable,skippable,restartable,readonly,inline,isLambda,hasDefaults,defaultsGroup,groups,calls,
+com.enterprise.feature.search.ui.SearchScreen,SearchScreen,1,1,1,0,0,0,1,0,2,3,
+com.enterprise.feature.search.ui.SearchContent,SearchContent,1,1,1,0,0,0,0,0,1,2,
+com.enterprise.feature.search.ui.SearchResults,SearchResults,1,1,1,0,0,0,0,0,1,1,
+com.enterprise.feature.search.ui.RecentSearches,RecentSearches,1,1,1,0,0,0,0,0,1,1,

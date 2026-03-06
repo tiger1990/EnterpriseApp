@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Travel Monk - Monochrome Adaptive Icon Layer
+    Use this as the android:monochrome attribute in your adaptive icon XML.
+    Android 13+ will tint this with the user's Material You wallpaper color.
+
+    viewportWidth/Height = 108dp (standard adaptive icon canvas)
+    Safe zone = center 72dp (18dp padding on each side)
+    The design is intentionally flat/silhouette for clean themed icon rendering.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- ═══════════════════════════════════════════════
+         COMPASS ROSE - 4-pointed star shape
+         Center: (54, 54), safe zone fits within 18–90
+    ═══════════════════════════════════════════════ -->
+
+    <!-- North spike (tall) -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M54,20
+            L58,50
+            L54,54
+            L50,50
+            Z" />
+
+    <!-- South spike (shorter) -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M54,88
+            L58,58
+            L54,54
+            L50,58
+            Z" />
+
+    <!-- East spike -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M88,54
+            L58,50
+            L54,54
+            L58,58
+            Z" />
+
+    <!-- West spike -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M20,54
+            L50,50
+            L54,54
+            L50,58
+            Z" />
+
+    <!-- ═══════════════════════════════════════════════
+         OUTER RING (donut) — compass bezel
+         Outer radius ~31, inner radius ~27
+    ═══════════════════════════════════════════════ -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M54,23
+            A31,31 0 1,1 53.99,23
+            Z
+            M54,27
+            A27,27 0 1,0 54.01,27
+            Z"
+        android:fillType="evenOdd" />
+
+    <!-- ═══════════════════════════════════════════════
+         MONK HEAD SILHOUETTE
+         Bald head profile facing right, centered in compass
+    ═══════════════════════════════════════════════ -->
+    <!-- Head (oval, slightly right-shifted inside compass) -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M54,36
+            C60,36 65,41 65,48
+            C65,55 61,60 56,62
+            C54,63 52,63 50,62
+            C45,60 42,55 42,48
+            C42,41 47,36 54,36
+            Z" />
+
+    <!-- Neck -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M49,62
+            L50,68
+            L58,68
+            L59,62
+            C57,63 55,63.5 53,63
+            Z" />
+
+    <!-- Shoulders / robe hint -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M44,68
+            C41,70 39,73 39,76
+            L69,76
+            C69,73 67,70 64,68
+            L58,68
+            L50,68
+            Z" />
+
+    <!-- ═══════════════════════════════════════════════
+         SMALL COMPASS on forehead (circle + crosshairs)
+    ═══════════════════════════════════════════════ -->
+    <!-- Compass circle on head -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M57,43
+            A5,5 0 1,1 56.99,43
+            Z
+            M57,45
+            A3,3 0 1,0 57.01,45
+            Z"
+        android:fillType="evenOdd" />
+
+    <!-- N pointer inside mini compass -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M57,38.5
+            L57.8,43
+            L57,43.5
+            L56.2,43
+            Z" />
+
+    <!-- S pointer -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M57,47.5
+            L57.8,43
+            L57,42.5
+            L56.2,43
+            Z" />
+
+    <!-- ═══════════════════════════════════════════════
+         STUPA / PAGODA (bottom right, simplified)
+    ═══════════════════════════════════════════════ -->
+    <!-- Base tier -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M76,82 L80,82 L80,79 L76,79 Z" />
+    <!-- Middle tier -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M75,79 L81,79 L81,76 L75,76 Z" />
+    <!-- Upper tier -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M76,76 L80,76 L80,74 L76,74 Z" />
+    <!-- Spire -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M78,74 L79,69 L78,68 L77,69 Z" />
+
+    <!-- ═══════════════════════════════════════════════
+         MOUNTAIN SILHOUETTE (bottom left, simplified)
+    ═══════════════════════════════════════════════ -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M22,82
+            L32,65
+            L36,70
+            L42,58
+            L48,72
+            L48,82
+            Z" />
+
+    <!-- ═══════════════════════════════════════════════
+         WINDING PATH / RIVER (center bottom)
+    ═══════════════════════════════════════════════ -->
+    <path
+        android:fillColor="#FF000000"
+        android:strokeColor="#FF000000"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="
+            M54,76
+            Q52,79 50,82
+            Q53,84 56,82
+            Q58,79 54,76
+            Z" />
+
+    <!-- Cardinal letters N, S, E, W (text as paths for vector purity) -->
+    <!-- W letter (left, ~x=25) -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M23,51 L25,57 L27,53 L29,57 L31,51
+            L30,51 L29,55 L27,51.5 L25,55 L24,51 Z" />
+
+    <!-- E letter (right, ~x=77) -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="
+            M77,51 L77,57 L83,57 L83,56 L78,56 L78,54.5 L82,54.5 L82,53.5 L78,53.5 L78,52 L83,52 L83,51 Z" />
+
+</vector>

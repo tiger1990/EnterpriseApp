@@ -1,0 +1,13 @@
+restartable skippable scheme("[0, [0]]") fun com.enterprise.app.theme.EnterpriseTheme(
+  stable darkTheme: Boolean = @dynamic <expression>
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable scheme("[0, [0]]") fun com.enterprise.app.theme.EnterpriseThemeV1(
+  stable darkTheme: Boolean = @dynamic <expression>
+  stable dynamicColor: Boolean = @static true
+  stable content: Function2<Composer, Int, Unit>
+)
+restartable skippable fun com.enterprise.app.ui.EnterpriseApp(
+  navigationEventBus: NavigationEventBus
+  stable modifier: Modifier? = @static <expression>
+)

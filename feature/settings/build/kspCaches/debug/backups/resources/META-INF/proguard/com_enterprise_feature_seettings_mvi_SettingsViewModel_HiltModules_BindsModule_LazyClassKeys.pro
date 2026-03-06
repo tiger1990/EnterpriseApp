@@ -1,0 +1,1 @@
+-keep,allowobfuscation,allowshrinking class com.enterprise.feature.seettings.mvi.SettingsViewModel

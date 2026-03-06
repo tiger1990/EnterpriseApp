@@ -1,0 +1,30 @@
+stable class com.enterprise.feature.settings.mvi.SettingsState {
+  stable val isDarkTheme: Boolean
+  stable val isNotificationsEnabled: Boolean
+  stable val appVersion: String
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.settings.mvi.SettingsAction.DarkThemeToggled {
+  stable val enabled: Boolean
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.settings.mvi.SettingsAction.NotificationsToggled {
+  stable val enabled: Boolean
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.settings.mvi.SettingsAction.BackPressed {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.settings.mvi.SettingsAction.ClearCacheClicked {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.settings.mvi.SettingsEffect.ShowSnackbar {
+  stable val message: String
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.settings.mvi.SettingsReducer {
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.seettings.mvi.SettingsViewModel {
+  <runtime stability> = Unstable
+}

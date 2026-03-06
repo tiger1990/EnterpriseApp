@@ -1,0 +1,15 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.search.ui.SearchScreen(
+  unstable viewModel: SearchViewModel? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.search.ui.SearchContent(
+  unstable state: SearchState
+  stable onAction: Function1<SearchAction, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.search.ui.SearchResults(
+  unstable items: List<Item>
+  stable onItemClick: Function1<Item, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.search.ui.RecentSearches(
+  unstable searches: List<String>
+  stable onSearchClick: Function1<String, Unit>
+)

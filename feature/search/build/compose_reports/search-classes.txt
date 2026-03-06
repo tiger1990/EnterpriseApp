@@ -1,0 +1,50 @@
+unstable class com.enterprise.feature.search.mvi.SearchState {
+  stable val query: String
+  stable val isActive: Boolean
+  stable val isSearching: Boolean
+  unstable val results: List<Item>
+  unstable val recentSearches: List<String>
+  stable val errorMessage: String?
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.search.mvi.SearchAction.QueryChanged {
+  stable val query: String
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.search.mvi.SearchAction.Search {
+  stable val query: String
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.search.mvi.SearchAction.ResultClicked {
+  unstable val item: Item
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.search.mvi.SearchAction.BackPressed {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.search.mvi.SearchAction.ClearQuery {
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.search.mvi.SearchAction.ActiveChanged {
+  stable val active: Boolean
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.search.mvi.SearchAction.ResultsLoaded {
+  unstable val result: SearchResult
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.feature.search.mvi.SearchAction.SearchFailed {
+  stable val message: String
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.search.mvi.SearchEffect.ShowError {
+  stable val message: String
+  <runtime stability> = Stable
+}
+stable class com.enterprise.feature.search.mvi.SearchReducer {
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.feature.search.mvi.SearchViewModel {
+  unstable val searchItems: SearchItemsUseCase
+  <runtime stability> = Unstable
+}

@@ -1,0 +1,11 @@
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.settings.ui.SettingsScreen(
+  unstable viewModel: SettingsViewModel? = @dynamic <expression>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.settings.ui.SettingsContent(
+  stable state: SettingsState
+  stable onAction: Function1<SettingsAction, Unit>
+)
+restartable skippable scheme("[androidx.compose.ui.UiComposable, [androidx.compose.ui.UiComposable]]") fun com.enterprise.feature.settings.ui.SettingsSection(
+  stable title: String
+  stable content: Function2<Composer, Int, Unit>
+)

@@ -1,0 +1,10 @@
+unstable class com.enterprise.app.EnterpriseApplication {
+  <runtime stability> = Unstable
+}
+stable class com.enterprise.app.di.ActivityModule {
+  <runtime stability> = Stable
+}
+unstable class com.enterprise.app.ui.MainActivity {
+  runtime var navigationEventBus: NavigationEventBus
+  <runtime stability> = Unstable
+}
