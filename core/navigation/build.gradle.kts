@@ -13,10 +13,16 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.navigation.compose)
+    //implementation(libs.androidx.navigation3.compose)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.kotlinx.coroutines.android)
     api(platform(libs.androidx.compose.bom))
+    api(libs.androidx.navigation3.runtime)
+    api(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.compose.material3)
+
+    testImplementation(libs.junit4)
+    testImplementation(libs.robolectric)
 }

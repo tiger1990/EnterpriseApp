@@ -31,7 +31,6 @@ dependencies {
     implementation(libs.androidx.baseline.profile)
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.androidx.uiautomator)
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.profileinstaller)
     //https://developer.android.com/jetpack/androidx/releases/benchmark
     //implementation(libs.androidx.benchmark.baseline.profile.gradle.plugin)

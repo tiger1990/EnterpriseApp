@@ -1,125 +1,223 @@
 package com.enterprise.core.navigation
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
+import android.net.Uri
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.unit.dp
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
+import androidx.savedstate.serialization.SavedStateConfiguration
 import kotlinx.coroutines.flow.SharedFlow
 
 /**
- * AppNavHost is the single composition-scoped owner of NavController.
+ * AppNavHost — single composition-scoped owner of the Nav3 back stack.
  *
- * Architecture contract:
- *  - NavController is created here via rememberNavController() and NEVER
+ * Architecture contract (unchanged from Nav2):
+ *  - Back stack is created here via rememberNavBackStack() and NEVER
  *    passed down to children or stored in any ViewModel.
  *  - ViewModels emit NavigationEvents → NavigationEventBus → collected here.
- *  - Each feature registers its composable destinations via NavGraphBuilder
+ *  - Each feature registers its composable destinations via EntryBuilder
  *    extensions (see feature modules).
  *
+ * Nav3 changes vs Nav2:
+ *  - rememberNavController()  →  rememberNavBackStack()
+ *  - NavHost { ... }          →  NavDisplay(entryProvider = entryProvider { ... })
+ *  - NavGraphBuilder.composable<R> { }  →  EntryProviderScope.entry<R> { }
+ *  - NavController.navigate() →  backStack.add() / removeLastOrNull() / etc.
+ *
+ * Deep links:
+ *  - [deepLinkUri] is passed down from MainActivity (Compose-observable state).
+ *  - DeepLinkRouter resolves URI → AppRoute; resolution lives entirely in
+ *    :core:navigation so neither MainActivity nor feature modules know about
+ *    URI patterns.
+ *
  * @param navigationEvents  Hot flow from NavigationEventBus (injected to Activity).
- * @param graphBuilder      Lambda that adds all feature destinations.
+ * @param deepLinkUri       URI from an incoming Intent (null if no deep link).
+ * @param entriesBuilder    Lambda that registers all feature entry destinations.
  */
 @Composable
 fun AppNavHost(
     navigationEvents: SharedFlow<NavigationEvent>,
     modifier: Modifier = Modifier,
+    deepLinkUri: Uri? = null,
     startDestination: AppRoute = HomeRoute,
-    graphBuilder: NavGraphBuilderScope.() -> Unit,
+    entriesBuilder: EntryBuilder.() -> Unit,
 ) {
-    val navController: NavHostController = rememberNavController()
+    // ── Explicit Serialization Configuration ──────────────────────────────────
+    // appSerializersModule (AppRoute.kt) prevents reflection fallback and ProGuard stripping.
+    val backStack = rememberNavBackStack(
+        configuration = SavedStateConfiguration { serializersModule = appSerializersModule },
+        startDestination
+    )
 
     // ── Collect navigation events emitted by ViewModels ──────────────────────
-    // LaunchedEffect is tied to the Composition lifetime; cancels automatically.
-    LaunchedEffect(navController) {
+    LaunchedEffect(backStack) {
         navigationEvents.collect { event ->
-            navController.handleNavigationEvent(event)
+            backStack.handleNavigationEvent(event)
         }
     }
 
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-        modifier = modifier,
-        enterTransition  = { defaultEnterTransition() },
-        exitTransition   = { defaultExitTransition() },
-        popEnterTransition  = { defaultPopEnterTransition() },
-        popExitTransition   = { defaultPopExitTransition() },
-    ) {
-        NavGraphBuilderScope(this).graphBuilder()
+    // ── Deep link handling ────────────────────────────────────────────────────
+    // Runs after first composition (NavDisplay collector is already active).
+    // Re-runs only when deepLinkUri changes (launch-time or onNewIntent).
+    // URI → AppRoute resolution stays in DeepLinkRouter — no route knowledge here.
+    LaunchedEffect(deepLinkUri) {
+        val route = deepLinkUri?.let { DeepLinkRouter.resolve(it) } ?: return@LaunchedEffect
+        backStack.handleNavigationEvent(
+            NavigationEvent.NavigateTo(
+                route   = route,
+                options = NavOptions(singleTop = true, popUpToRoute = HomeRoute, popUpToInclusive = false),
+            )
+        )
     }
+
+    NavDisplay(
+        backStack = backStack,
+        onBack = { backStack.removeLastOrNull() },
+        modifier = modifier,
+        entryProvider = entryProvider {
+            // ErrorRoute is owned by core:navigation; registered here so AppNavHost
+            // can pass a direct backStack callback without needing a ViewModel.
+            entry<ErrorRoute> {
+                ErrorScreen(
+                    onGoHome = {
+                        backStack.handleNavigationEvent(NavigationEvent.PopToRoot(HomeRoute))
+                    },
+                )
+            }
+            EntryBuilder(this).entriesBuilder()
+        },
+        transitionSpec = {
+            (slideInHorizontally(tween(300)) { it / 4 } + fadeIn(tween(300))) togetherWith
+                (slideOutHorizontally(tween(300)) { -it / 4 } + fadeOut(tween(300)))
+        },
+        popTransitionSpec = {
+            (slideInHorizontally(tween(300)) { -it / 4 } + fadeIn(tween(300))) togetherWith
+                (slideOutHorizontally(tween(300)) { it / 4 } + fadeOut(tween(300)))
+        },
+    )
 }
 
 // ─── Navigation event handler ─────────────────────────────────────────────────
+//
+// The back stack is a SnapshotStateList<NavKey>, so mutations trigger recomposition
+// automatically. All Nav2 NavController semantics are replicated here.
 
-private fun NavController.handleNavigationEvent(event: NavigationEvent) {
+private fun MutableList<NavKey>.handleNavigationEvent(event: NavigationEvent) {
     when (event) {
         is NavigationEvent.NavigateTo -> {
-            navigate(route = event.route) {
-                event.options.popUpToRoute?.let { popRoute ->
-                    popUpTo(popRoute) {
-                        inclusive = event.options.popUpToInclusive
-                        saveState = event.options.popUpToSaveState
-                    }
-                }
-                launchSingleTop = event.options.singleTop
-                restoreState    = event.options.restoreState
+            // singleTop: skip push if the route class is already at the top
+            if (event.options.singleTop &&
+                isNotEmpty() &&
+                last()::class == event.route::class
+            ) return
+
+            event.options.popUpToRoute?.let { popRoute ->
+                popTo(popRoute, event.options.popUpToInclusive)
             }
+            add(event.route)
         }
 
-        is NavigationEvent.NavigateUp -> navigateUp()
+        is NavigationEvent.NavigateUp -> removeLastOrNull()
 
-        is NavigationEvent.PopUpTo -> {
-            popBackStack(route = event.route, inclusive = event.inclusive, saveState = event.saveState)
-        }
+        is NavigationEvent.PopUpTo -> popTo(event.route, event.inclusive)
 
         is NavigationEvent.PopToRoot -> {
-            navigate(route = event.root) {
-                popUpTo(graph.findStartDestination().id) {
-                    saveState = true
-                }
-                launchSingleTop = true
-                restoreState    = true
+            // Keep the root entry; clear everything above it.
+            val rootIndex = indexOfFirst { it::class == event.root::class }
+            if (rootIndex >= 0) {
+                subList(rootIndex + 1, size).clear()
+            } else {
+                // Root not in stack — clear and push it fresh.
+                clear()
+                add(event.root)
             }
         }
     }
 }
 
-// ─── Animated transition defaults ─────────────────────────────────────────────
+/**
+ * Pop the back stack to the last entry matching [route]'s class.
+ * If [inclusive] is true the matching entry itself is also removed.
+ */
+private fun MutableList<NavKey>.popTo(route: AppRoute, inclusive: Boolean) {
+    val index = indexOfLast { it::class == route::class }
+    if (index >= 0) {
+        val removeFrom = if (inclusive) index else index + 1
+        if (removeFrom < size) subList(removeFrom, size).clear()
+    }
+}
 
-private fun AnimatedContentTransitionScope<*>.defaultEnterTransition(): EnterTransition =
-    slideInHorizontally(animationSpec = tween(300)) { it / 4 } + fadeIn(tween(300))
+// ─── Error screen ─────────────────────────────────────────────────────────────
+//
+// Shown whenever DeepLinkRouter resolves an enterprise:// URI it cannot match.
+// Kept in core:navigation alongside ErrorRoute — no ViewModel needed since
+// AppNavHost owns the backStack and passes the callback directly.
 
-private fun AnimatedContentTransitionScope<*>.defaultExitTransition(): ExitTransition =
-    slideOutHorizontally(animationSpec = tween(300)) { -it / 4 } + fadeOut(tween(300))
-
-private fun AnimatedContentTransitionScope<*>.defaultPopEnterTransition(): EnterTransition =
-    slideInHorizontally(animationSpec = tween(300)) { -it / 4 } + fadeIn(tween(300))
-
-private fun AnimatedContentTransitionScope<*>.defaultPopExitTransition(): ExitTransition =
-    slideOutHorizontally(animationSpec = tween(300)) { it / 4 } + fadeOut(tween(300))
-
-// ─── Wrapper to allow features to add destinations without exposing NavGraphBuilder ──
+@Composable
+private fun ErrorScreen(onGoHome: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 32.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = "Link not found",
+                style = MaterialTheme.typography.headlineSmall,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "The link you followed is invalid or has expired.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            Button(onClick = onGoHome) {
+                Text("Go to Home")
+            }
+        }
+    }
+}
 
 /**
- * Thin wrapper around NavGraphBuilder. Features extend this via
- * extension functions to add their destinations.
+ * Thin wrapper around Nav3's EntryProviderScope.
+ *
+ * Feature modules extend this via extension functions, calling [scope].entry<T> { }
+ * from Nav3's API to register composable destinations.
+ *
+ * The wrapper keeps EntryProviderScope<NavKey> as an implementation detail —
+ * feature modules only import EntryBuilder from core:navigation.
  *
  * Example (in feature:home):
- *   fun NavGraphBuilderScope.homeGraph() {
- *       composable<HomeRoute> { HomeScreen() }
+ *   fun EntryBuilder.homeEntries() {
+ *       scope.entry<HomeRoute> { HomeScreen() }
  *   }
  */
 @JvmInline
-value class NavGraphBuilderScope(val builder: androidx.navigation.NavGraphBuilder)
+value class EntryBuilder(val scope: EntryProviderScope<NavKey>)

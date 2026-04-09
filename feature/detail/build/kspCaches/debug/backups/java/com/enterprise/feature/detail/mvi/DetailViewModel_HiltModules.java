@@ -1,16 +1,17 @@
 package com.enterprise.feature.detail.mvi;
 
-import androidx.lifecycle.ViewModel;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ActivityRetainedComponent;
 import dagger.hilt.android.components.ViewModelComponent;
+import dagger.hilt.android.internal.lifecycle.HiltViewModelAssistedMap;
 import dagger.hilt.android.internal.lifecycle.HiltViewModelMap;
 import dagger.hilt.codegen.OriginatingElement;
 import dagger.multibindings.IntoMap;
 import dagger.multibindings.LazyClassKey;
+import java.lang.Object;
 import javax.annotation.processing.Generated;
 
 @Generated("dagger.hilt.android.processor.internal.viewmodel.ViewModelProcessor")
@@ -30,8 +31,8 @@ public final class DetailViewModel_HiltModules {
     @Binds
     @IntoMap
     @LazyClassKey(DetailViewModel.class)
-    @HiltViewModelMap
-    public abstract ViewModel binds(DetailViewModel vm);
+    @HiltViewModelAssistedMap
+    public abstract Object bind(DetailViewModel.Factory factory);
   }
 
   @Module

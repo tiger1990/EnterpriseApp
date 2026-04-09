@@ -5,5 +5,6 @@ drawable ic_compass_calibration
 drawable ic_edit_profile
 drawable ic_favorite
 drawable ic_heart_broken
+drawable ic_list
 drawable ic_person
 drawable ic_search

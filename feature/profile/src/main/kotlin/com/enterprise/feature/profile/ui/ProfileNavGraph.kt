@@ -1,27 +1,23 @@
 package com.enterprise.feature.profile.ui
 
-import androidx.navigation.compose.composable
 import com.enterprise.core.navigation.EditProfileRoute
+import com.enterprise.core.navigation.EntryBuilder
 import com.enterprise.core.navigation.ProfileRoute
-import com.enterprise.core.navigation.NavGraphBuilderScope
 
-// ═══════════════════════════ NavGraph ═════════════════════════════════════════
-
-fun NavGraphBuilderScope.profileGraph() {
-    builder.composable<ProfileRoute>(
-        deepLinks = listOf(
-            androidx.navigation.navDeepLink { uriPattern = ProfileRoute.DEEP_LINK_URI }
-        ),
-    ) {
+/**
+ * Registers Profile and EditProfile destinations.
+ *
+ * Deep links (enterprise://profile, enterprise://profile/edit/{userId}) —
+ * see ProfileRoute.DEEP_LINK_URI and EditProfileRoute.DEEP_LINK_URI.
+ * Handled in DeepLinkRouter / MainActivity.
+ */
+fun EntryBuilder.profileEntries() {
+    scope.entry<ProfileRoute> {
         ProfileScreen()
     }
 
-    builder.composable<EditProfileRoute>(
-        deepLinks = listOf(
-            androidx.navigation.navDeepLink { uriPattern = EditProfileRoute.DEEP_LINK_URI }
-        ),
-    ) {
-        // EditProfileScreen would go here — omitted for brevity
+    scope.entry<EditProfileRoute> { route ->
+        // EditProfileScreen(userId = route.userId) — replace with real screen
         ProfileScreen()
     }
 }

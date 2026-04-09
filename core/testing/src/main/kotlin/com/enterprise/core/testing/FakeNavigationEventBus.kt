@@ -4,6 +4,7 @@ import com.enterprise.core.navigation.NavigationEvent
 import com.enterprise.core.navigation.NavigationEventBus
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 // ─── Fake NavigationEventBus for unit tests ───────────────────────────────────
 

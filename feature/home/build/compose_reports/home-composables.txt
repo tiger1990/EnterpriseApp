@@ -1,9 +1,9 @@
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.HomeScreen(
-  unstable viewModel: HomeViewModel? = @dynamic <expression>
+  viewModel: HomeViewModel? = @dynamic <expression>
 )
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.HomeContent(
-  unstable state: HomeState
-  stable snackbarHost: SnackbarHostState
+  state: HomeState
+  stable snackBarHost: SnackbarHostState
   stable onAction: Function1<HomeAction, Unit>
 )
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.home.ui.HomeTopBar(

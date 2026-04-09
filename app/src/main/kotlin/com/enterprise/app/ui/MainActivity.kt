@@ -1,12 +1,17 @@
 package com.enterprise.app.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.enterprise.app.navigation.AppGraph
+import com.enterprise.app.navigation.appEntries
 import com.enterprise.app.theme.EnterpriseTheme
 import com.enterprise.core.navigation.AppNavHost
 import com.enterprise.core.navigation.NavigationEventBus
@@ -19,54 +24,71 @@ import javax.inject.Inject
  * Responsibilities:
  *   1. Edge-to-edge setup
  *   2. Theme wrapping
- *   3. Providing the NavigationEventBus to AppNavHost
+ *   3. Bridging Android's Intent system → Compose state (deep link URI)
+ *   4. Providing NavigationEventBus to AppNavHost
  *
  * What it does NOT do:
- *   ❌ Hold NavController
+ *   ❌ Know about any AppRoute
+ *   ❌ Parse or interpret URIs
+ *   ❌ Hold NavController / NavBackStack
  *   ❌ Make navigation decisions
- *   ❌ Know about feature destinations directly (delegated to AppGraph)
  *
- * Hilt scoping:
- *   NavigationEventBus is @ActivityRetainedScoped — injected here and shared
- *   with all ViewModels in this Activity via Hilt's activity-retained component.
+ * Deep link flow:
+ *   Android Intent (URI)
+ *     → pendingDeepLinkUri (Compose-observable state)
+ *       → AppNavHost.deepLinkUri
+ *         → DeepLinkRouter.resolve()   [all in core:navigation]
+ *           → backStack.handleNavigationEvent()
  */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    /**
-     * Hilt injects the @ActivityRetainedScoped bus.
-     * The same instance is injected into all ViewModels in this Activity.
-     */
     @Inject
     lateinit var navigationEventBus: NavigationEventBus
+
+    /**
+     * Compose-observable — writing from onNewIntent automatically
+     * triggers recomposition and re-runs the deep link LaunchedEffect in AppNavHost.
+     */
+    private var pendingDeepLinkUri by mutableStateOf<Uri?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        pendingDeepLinkUri = intent.data
 
         setContent {
             EnterpriseTheme {
-                EnterpriseApp(navigationEventBus = navigationEventBus)
+                EnterpriseApp(
+                    navigationEventBus = navigationEventBus,
+                    deepLinkUri        = pendingDeepLinkUri,
+                )
             }
         }
     }
+
+    /** Called when a new deep link arrives while the Activity is already running. */
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        pendingDeepLinkUri = intent.data
+    }
 }
 
+/**
+ * Pure pass-through composable. No route knowledge. No navigation logic.
+ * Exists only to keep MainActivity.setContent {} minimal.
+ */
 @Composable
 private fun EnterpriseApp(
     navigationEventBus: NavigationEventBus,
     modifier: Modifier = Modifier,
+    deepLinkUri: Uri? = null,
 ) {
-    /**
-     * AppNavHost is the ONLY place where NavController lives.
-     * navigationEvents is collected here → NavController.navigate() is called here.
-     * No ViewModel, no other composable ever touches NavController.
-     */
     AppNavHost(
         navigationEvents = navigationEventBus.navigationEvents,
+        deepLinkUri      = deepLinkUri,
         modifier         = modifier,
     ) {
-        // Registers all feature destinations via extension functions
-        AppGraph()
+        appEntries()
     }
 }

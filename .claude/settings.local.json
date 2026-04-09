@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//private/tmp/**)",
+      "Bash(jar -tf /Users/deepakpanwar/.gradle/caches/modules-2/files-2.1/androidx.navigation3/navigation3-ui-android/1.0.1/1e0d8f2efb583485ca7e1e7575b61aaa50ef9dd9/navigation3-ui-android-1.0.1-sources.jar)",
+      "Bash(find /Users/deepakpanwar/.gradle/caches/modules-2/files-2.1/androidx.lifecycle -name *navigation3*sources*)",
+      "Bash(jar -xf /Users/deepakpanwar/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-viewmodel-navigation3-android/2.10.0/21220c272128aec84a53295af7e733b6679297cf/lifecycle-viewmodel-navigation3-android-2.10.0-sources.jar \"androidMain/androidx/lifecycle/viewmodel/navigation3/ViewModelStoreNavEntryDecorator.android.kt\")",
+      "Read(//tmp/androidMain/androidx/lifecycle/viewmodel/navigation3/**)",
+      "Bash(jar -xf /Users/deepakpanwar/.gradle/caches/modules-2/files-2.1/androidx.hilt/hilt-navigation-compose/1.3.0/7e5b888341f66ab6db9fc46df6e91a54c5f5bcd9/hilt-navigation-compose-1.3.0-sources.jar \"androidx/hilt/navigation/compose/HiltViewModel.kt\")",
+      "Read(//tmp/androidx/hilt/navigation/compose/**)"
+    ]
+  }
+}

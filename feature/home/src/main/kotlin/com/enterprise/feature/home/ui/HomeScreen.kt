@@ -26,8 +26,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
@@ -44,7 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.enterprise.core.domain.model.Item
 import com.enterprise.core.tokens.R
@@ -60,20 +60,20 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     // Collect one-shot effects
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
             when (effect) {
-                is HomeEffect.ShowSnackbar -> snackbarHostState.showSnackbar(effect.message)
+                is HomeEffect.ShowSnackbar -> snackBarHostState.showSnackbar(effect.message)
             }
         }
     }
 
     HomeContent(
         state = state,
-        snackbarHost = snackbarHostState,
+        snackBarHost = snackBarHostState,
         onAction = viewModel::dispatch,
     )
 }
@@ -84,7 +84,7 @@ fun HomeScreen(
 @Composable
 internal fun HomeContent(
     state: HomeState,
-    snackbarHost: SnackbarHostState,
+    snackBarHost: SnackbarHostState,
     onAction: (HomeAction) -> Unit,
 ) {
     Scaffold(
@@ -94,7 +94,7 @@ internal fun HomeContent(
                 onProfileClick = { onAction(HomeAction.ProfileClicked) },
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHost) },
+        snackbarHost = { SnackbarHost(snackBarHost) },
     ) { paddingValues ->
 
         Column(
@@ -163,13 +163,14 @@ private fun HomeTopBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeTabs(
     selectedIndex: Int,
     onTabSelected: (Int) -> Unit,
 ) {
     val tabs = listOf("All", "Favourites")
-    ScrollableTabRow(selectedTabIndex = selectedIndex) {
+    PrimaryScrollableTabRow(selectedTabIndex = selectedIndex) {
         tabs.forEachIndexed { index, title ->
             Tab(
                 selected = selectedIndex == index,
@@ -289,7 +290,7 @@ private fun HomeContentPreview() {
     MaterialTheme {
         HomeContent(
             state = HomeState(items = previewItems),
-            snackbarHost = SnackbarHostState(),
+            snackBarHost = SnackbarHostState(),
             onAction = {},
         )
     }

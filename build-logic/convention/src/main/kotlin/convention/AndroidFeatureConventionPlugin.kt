@@ -34,8 +34,14 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             add("implementation", libs.findLibrary("androidx-lifecycle-viewmodel-compose").get())
             add("implementation", libs.findLibrary("androidx-lifecycle-runtime-compose").get())
             add("implementation", libs.findLibrary("androidx-lifecycle-viewmodel-savedstate").get())
-            add("implementation", libs.findLibrary("androidx-navigation-compose").get())
+            add("implementation", libs.findLibrary("androidx-lifecycle-viewmodel-navigation3").get())
+            add("implementation", libs.findLibrary("androidx-navigation3-runtime").get())
+            add("implementation", libs.findLibrary("androidx-navigation3-ui").get())
+            // hilt-navigation-compose — provides hiltViewModel() scoped to Nav3 entries
             add("implementation", libs.findLibrary("hilt-navigation").get())
+            // hilt-lifecycle-viewmodel-compose — new home for hiltViewModel() with Assisted Injection
+            add("implementation", libs.findLibrary("hilt-lifecycle-viewmodel-compose").get())
+
             add("implementation", libs.findLibrary("kotlinx-coroutines-android").get())
             add("implementation", libs.findLibrary("kotlinx-serialization-json").get())
 

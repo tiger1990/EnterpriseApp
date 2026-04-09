@@ -22,8 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.core.domain.model.UserProfile
 import com.enterprise.core.tokens.R
 import com.enterprise.feature.profile.mvi.ProfileAction
@@ -33,7 +33,7 @@ import com.enterprise.feature.profile.mvi.ProfileViewModel
 // ═══════════════════════════ UI ═══════════════════════════════════════════════
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     ProfileContent(state = state, onAction = viewModel::dispatch)
 }

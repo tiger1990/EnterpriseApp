@@ -14,7 +14,11 @@ pluginManagement {
         // See androidx.dev for full instructions.
         /*maven {
             url = uri("https://androidx.dev/snapshots/builds/<build_id>/artifacts/repository")
+            eg:  url = uri("https://androidx.dev/snapshots/builds/13508953/artifacts/repository")
         }*/
+        // for absolute latest alpha or rc
+        // Only needed if using bleeding-edge dev builds:
+        // maven { url = uri("https://androidx.dev/storage/compose-staging/repository") }
     }
 }
 

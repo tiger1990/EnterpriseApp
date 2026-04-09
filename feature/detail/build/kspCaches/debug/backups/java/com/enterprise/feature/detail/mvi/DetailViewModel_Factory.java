@@ -5,7 +5,6 @@ import com.enterprise.core.domain.usecase.GetItemUseCase;
 import com.enterprise.core.domain.usecase.ToggleFavouriteUseCase;
 import com.enterprise.core.navigation.NavigationEventBus;
 import dagger.internal.DaggerGenerated;
-import dagger.internal.Factory;
 import dagger.internal.Provider;
 import dagger.internal.QualifierMetadata;
 import dagger.internal.ScopeMetadata;
@@ -27,7 +26,7 @@ import javax.annotation.processing.Generated;
     "deprecation",
     "nullness:initialization.field.uninitialized"
 })
-public final class DetailViewModel_Factory implements Factory<DetailViewModel> {
+public final class DetailViewModel_Factory {
   private final Provider<GetItemUseCase> getItemProvider;
 
   private final Provider<ToggleFavouriteUseCase> toggleFavouriteProvider;
@@ -46,9 +45,8 @@ public final class DetailViewModel_Factory implements Factory<DetailViewModel> {
     this.savedStateHandleProvider = savedStateHandleProvider;
   }
 
-  @Override
-  public DetailViewModel get() {
-    return newInstance(getItemProvider.get(), toggleFavouriteProvider.get(), navigationBusProvider.get(), savedStateHandleProvider.get());
+  public DetailViewModel get(String itemId, String itemTitle) {
+    return newInstance(itemId, itemTitle, getItemProvider.get(), toggleFavouriteProvider.get(), navigationBusProvider.get(), savedStateHandleProvider.get());
   }
 
   public static DetailViewModel_Factory create(Provider<GetItemUseCase> getItemProvider,
@@ -58,9 +56,9 @@ public final class DetailViewModel_Factory implements Factory<DetailViewModel> {
     return new DetailViewModel_Factory(getItemProvider, toggleFavouriteProvider, navigationBusProvider, savedStateHandleProvider);
   }
 
-  public static DetailViewModel newInstance(GetItemUseCase getItem,
+  public static DetailViewModel newInstance(String itemId, String itemTitle, GetItemUseCase getItem,
       ToggleFavouriteUseCase toggleFavourite, NavigationEventBus navigationBus,
       SavedStateHandle savedStateHandle) {
-    return new DetailViewModel(getItem, toggleFavourite, navigationBus, savedStateHandle);
+    return new DetailViewModel(itemId, itemTitle, getItem, toggleFavourite, navigationBus, savedStateHandle);
   }
 }

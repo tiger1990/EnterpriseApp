@@ -97,8 +97,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:common"))
 
-    // Navigation
-    implementation(libs.androidx.navigation.compose)
+    // hilt-navigation-compose — still needed for hiltViewModel() in screen composables
     implementation(libs.hilt.navigation)
 
     implementation(libs.androidx.core.ktx)

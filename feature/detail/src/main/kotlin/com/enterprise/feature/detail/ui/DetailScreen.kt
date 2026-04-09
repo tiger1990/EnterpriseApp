@@ -31,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.enterprise.core.tokens.R
 import com.enterprise.feature.detail.mvi.DetailAction
@@ -43,7 +42,7 @@ import com.enterprise.feature.detail.mvi.DetailViewModel
 
 @Composable
 fun DetailScreen(
-    viewModel: DetailViewModel = hiltViewModel(),
+    viewModel: DetailViewModel,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackBarHostState = remember { SnackbarHostState() }

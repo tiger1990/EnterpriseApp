@@ -27,8 +27,6 @@ dependencies {
     // We use implementation for the baseline profile plugin to see the ProducerExtension class
     // Add this so your convention plugin can see the Baseline Profile classes
     implementation(libs.plugins.baseline.profile.toDep())
-    // Add this so your convention plugin can see the Baseline Profile classes
-    implementation(libs.androidx.benchmark.baseline.profile.gradle.plugin)
 
      compileOnly(libs.plugins.compose.compiler.toDep())
      compileOnly(libs.plugins.hilt.toDep())

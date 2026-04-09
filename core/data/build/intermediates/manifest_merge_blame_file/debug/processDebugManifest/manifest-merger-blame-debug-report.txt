@@ -3,5 +3,7 @@
 3    package="com.enterprise.core.data" >
 4
 5    <uses-sdk android:minSdkVersion="28" />
+5-->INJECTED
+5-->INJECTED
 6
 7</manifest>

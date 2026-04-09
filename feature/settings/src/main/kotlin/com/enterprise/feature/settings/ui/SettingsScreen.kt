@@ -19,8 +19,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.core.tokens.R
 import com.enterprise.feature.seettings.mvi.SettingsViewModel
 import com.enterprise.feature.settings.mvi.SettingsAction
@@ -29,7 +29,7 @@ import com.enterprise.feature.settings.mvi.SettingsState
 // ═══════════════════════════ UI ═══════════════════════════════════════════════
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(viewModel: SettingsViewModel = viewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     SettingsContent(state = state, onAction = viewModel::dispatch)
 }

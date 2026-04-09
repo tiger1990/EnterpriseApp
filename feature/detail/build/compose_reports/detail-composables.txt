@@ -1,5 +1,5 @@
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.detail.ui.DetailScreen(
-  unstable viewModel: DetailViewModel? = @dynamic <expression>
+  unstable viewModel: DetailViewModel
 )
 restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun com.enterprise.feature.detail.ui.DetailContent(
   unstable state: DetailState

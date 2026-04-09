@@ -21,8 +21,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.core.domain.model.Item
 import com.enterprise.core.tokens.R
 import com.enterprise.feature.search.mvi.SearchAction
@@ -32,7 +32,7 @@ import com.enterprise.feature.search.mvi.SearchViewModel
 // ═══════════════════════════ UI ═══════════════════════════════════════════════
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
+fun SearchScreen(viewModel: SearchViewModel = viewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     SearchContent(state = state, onAction = viewModel::dispatch)
 }
