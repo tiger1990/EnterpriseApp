@@ -56,9 +56,8 @@ import com.enterprise.feature.home.mvi.HomeViewModel
 // ─── Entry point: wires ViewModel to stateless UI ─────────────────────────────
 
 @Composable
-fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel(),
-) {
+fun HomeScreen() {
+    val viewModel: HomeViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackBarHostState = remember { SnackbarHostState() }
 

@@ -12,15 +12,12 @@ import com.enterprise.core.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.serialization.Serializable
 import javax.inject.Inject
 import javax.inject.Singleton
 
 // ─── DTOs ─────────────────────────────────────────────────────────────────────
 // DTOs live in :data and are NEVER exposed to :domain or :feature
 
-@Serializable
 data class ItemDto(
     val id: String,
     val title: String,
@@ -29,7 +26,6 @@ data class ItemDto(
     val isFavourite: Boolean = false,
 )
 
-@Serializable
 data class UserProfileDto(
     val id: String,
     val name: String,
@@ -129,7 +125,7 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
     }
 
     override suspend fun getProfile(): Result<UserProfile> =
-        (_profile.value as? Result.Success)?.let { it } ?: safeCall { FakeData.profile }
+        (_profile.value as? Result.Success) ?: safeCall { FakeData.profile }
 
     override suspend fun updateProfile(profile: UserProfile): Result<UserProfile> = safeCall {
         _profile.value = Result.Success(profile)

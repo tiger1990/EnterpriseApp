@@ -50,13 +50,13 @@ fun interface Reducer<S : UiState, A : UiAction> {
  *  [Concurrent]        — Default. Every dispatch gets its own coroutine.
  *                        Use for: fast navigation events, state-only actions.
  *
- *  [DropIfBusy]        — If middleware tagged with [key] is already running,
+ *  [DropIfBusy]        — If middleware tagged with key is already running,
  *                        the new dispatch is silently skipped (reducer ran;
  *                        async side-effect is not re-triggered).
  *                        Use for: idempotent loads (LoadItem, LoadProfile) and
  *                        mutations that should not stack (ToggleFavourite).
  *
- *  [CancelAndRelaunch] — Cancel the in-flight coroutine for [key], then start
+ *  [CancelAndRelaunch] — Cancel the in-flight coroutine for key, then start
  *                        fresh. Use for: user-driven queries where only the
  *                        latest result matters (Search, Filter).
  */

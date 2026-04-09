@@ -29,7 +29,8 @@ import com.enterprise.feature.settings.mvi.SettingsViewModel
 // ═══════════════════════════ UI ═══════════════════════════════════════════════
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen() {
+    val viewModel: SettingsViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
     SettingsContent(state = state, onAction = viewModel::dispatch)
 }

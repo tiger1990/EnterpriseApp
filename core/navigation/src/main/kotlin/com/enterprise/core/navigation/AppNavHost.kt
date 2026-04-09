@@ -214,7 +214,7 @@ private fun ErrorScreen(onGoHome: () -> Unit) {
 /**
  * Thin wrapper around Nav3's EntryProviderScope.
  *
- * Feature modules extend this via extension functions, calling [scope].entry<T> { }
+ * Feature modules extend this via extension functions, calling scope.entry<T> { }
  * from Nav3's API to register composable destinations.
  *
  * The wrapper keeps EntryProviderScope<NavKey> as an implementation detail —

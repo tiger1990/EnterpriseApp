@@ -37,15 +37,16 @@ import com.enterprise.feature.profile.mvi.ProfileViewModel
 // ═══════════════════════════ UI ═══════════════════════════════════════════════
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileScreen() {
+    val viewModel: ProfileViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
         viewModel.effects.collect { /* ProfileEffect has no variants yet — collector ready for future effects */ }
     }
 
-    ProfileContent(state = state, snackbarHost = snackbarHostState, onAction = viewModel::dispatch)
+    ProfileContent(state = state, snackbarHost = snackBarHostState, onAction = viewModel::dispatch)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

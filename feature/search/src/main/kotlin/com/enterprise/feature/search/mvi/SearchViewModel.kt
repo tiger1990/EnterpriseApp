@@ -5,7 +5,6 @@ import com.enterprise.core.common.mvi.ActionConcurrency
 import com.enterprise.core.common.mvi.MviViewModel
 import com.enterprise.core.common.mvi.getOrDefault
 import com.enterprise.core.common.mvi.saveTo
-import com.enterprise.feature.search.mvi.toSearchUiModel
 import com.enterprise.core.common.result.Result
 import androidx.lifecycle.viewModelScope
 import com.enterprise.core.domain.repository.SearchRepository

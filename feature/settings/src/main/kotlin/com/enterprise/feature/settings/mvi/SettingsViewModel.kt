@@ -8,10 +8,6 @@ import com.enterprise.core.common.mvi.saveTo
 import com.enterprise.core.domain.repository.ThemeRepository
 import com.enterprise.core.navigation.NavigationEvent
 import com.enterprise.core.navigation.NavigationEventBus
-import com.enterprise.feature.settings.mvi.SettingsAction
-import com.enterprise.feature.settings.mvi.SettingsEffect
-import com.enterprise.feature.settings.mvi.SettingsReducer
-import com.enterprise.feature.settings.mvi.SettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch

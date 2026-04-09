@@ -8,7 +8,6 @@ import com.enterprise.core.domain.usecase.ToggleFavouriteUseCase
 import com.enterprise.core.navigation.NavigationEvent
 import com.enterprise.core.navigation.NavigationEventBus
 import com.enterprise.core.common.mvi.ActionConcurrency
-import com.enterprise.feature.detail.mvi.toDetailUiModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

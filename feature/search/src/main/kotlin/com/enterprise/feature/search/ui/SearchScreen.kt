@@ -32,7 +32,8 @@ import com.enterprise.feature.search.mvi.SearchViewModel
 // ═══════════════════════════ UI ═══════════════════════════════════════════════
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
+fun SearchScreen() {
+    val viewModel: SearchViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
     SearchContent(state = state, onAction = viewModel::dispatch)
 }

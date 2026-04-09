@@ -3,7 +3,6 @@ package com.enterprise.feature.profile.mvi
 import androidx.lifecycle.SavedStateHandle
 import com.enterprise.core.common.mvi.ActionConcurrency
 import com.enterprise.core.common.mvi.MviViewModel
-import com.enterprise.feature.profile.mvi.toUiModel
 import com.enterprise.core.common.result.Result
 import com.enterprise.core.domain.usecase.GetProfileUseCase
 import com.enterprise.core.navigation.EditProfileRoute
