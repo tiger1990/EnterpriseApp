@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,7 +29,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.Flow
 
 /**
  * AppNavHost — single composition-scoped owner of the Nav3 back stack.
@@ -58,7 +59,7 @@ import kotlinx.coroutines.flow.SharedFlow
  */
 @Composable
 fun AppNavHost(
-    navigationEvents: SharedFlow<NavigationEvent>,
+    navigationEvents: Flow<NavigationEvent>,
     modifier: Modifier = Modifier,
     deepLinkUri: Uri? = null,
     startDestination: AppRoute = HomeRoute,
@@ -70,6 +71,27 @@ fun AppNavHost(
         configuration = SavedStateConfiguration { serializersModule = appSerializersModule },
         startDestination
     )
+
+    // remember: same lambda reference across recompositions so NavDisplay
+    // doesn't treat it as a changed param on every back-stack mutation.
+    val onBack: () -> Unit = remember(backStack) { { backStack.removeLastOrNull() } }
+
+    // remember: entryProvider is built once per entriesBuilder identity.
+    // Recreating it on every recomposition would re-register all destinations
+    // and allocate new lambdas for each entry unnecessarily.
+    val provider = remember(backStack, entriesBuilder) {
+        entryProvider {
+            entry<ErrorRoute> {
+                ErrorScreen(
+                    // onGoHome captures backStack — same reference, so safe to remember
+                    onGoHome = {
+                        backStack.handleNavigationEvent(NavigationEvent.PopToRoot(HomeRoute))
+                    },
+                )
+            }
+            EntryBuilder(this).entriesBuilder()
+        }
+    }
 
     // ── Collect navigation events emitted by ViewModels ──────────────────────
     LaunchedEffect(backStack) {
@@ -93,29 +115,13 @@ fun AppNavHost(
     }
 
     NavDisplay(
-        backStack = backStack,
-        onBack = { backStack.removeLastOrNull() },
-        modifier = modifier,
-        entryProvider = entryProvider {
-            // ErrorRoute is owned by core:navigation; registered here so AppNavHost
-            // can pass a direct backStack callback without needing a ViewModel.
-            entry<ErrorRoute> {
-                ErrorScreen(
-                    onGoHome = {
-                        backStack.handleNavigationEvent(NavigationEvent.PopToRoot(HomeRoute))
-                    },
-                )
-            }
-            EntryBuilder(this).entriesBuilder()
-        },
-        transitionSpec = {
-            (slideInHorizontally(tween(300)) { it / 4 } + fadeIn(tween(300))) togetherWith
-                (slideOutHorizontally(tween(300)) { -it / 4 } + fadeOut(tween(300)))
-        },
-        popTransitionSpec = {
-            (slideInHorizontally(tween(300)) { -it / 4 } + fadeIn(tween(300))) togetherWith
-                (slideOutHorizontally(tween(300)) { it / 4 } + fadeOut(tween(300)))
-        },
+        backStack       = backStack,
+        onBack          = onBack,
+        modifier        = modifier,
+        entryProvider   = provider,
+        // Top-level constants — no allocation on every transition or recomposition
+        transitionSpec    = { NavForwardTransition },
+        popTransitionSpec = { NavBackTransition },
     )
 }
 
@@ -130,7 +136,7 @@ private fun MutableList<NavKey>.handleNavigationEvent(event: NavigationEvent) {
             // singleTop: skip push if the route class is already at the top
             if (event.options.singleTop &&
                 isNotEmpty() &&
-                last()::class == event.route::class
+                last() == event.route
             ) return
 
             event.options.popUpToRoute?.let { popRoute ->
@@ -219,5 +225,21 @@ private fun ErrorScreen(onGoHome: () -> Unit) {
  *       scope.entry<HomeRoute> { HomeScreen() }
  *   }
  */
+// ─── Transition specs ─────────────────────────────────────────────────────────
+//
+// Top-level vals: created once, never recreated on recomposition.
+// Passing inline lambdas to NavDisplay would create new objects every time
+// AppNavHost recomposes (e.g. on every back-stack change).
+
+private val NavForwardTransition =
+    slideInHorizontally(tween(300)) { it / 4 } + fadeIn(tween(300)) togetherWith
+        slideOutHorizontally(tween(300)) { -it / 4 } + fadeOut(tween(300))
+
+private val NavBackTransition =
+    slideInHorizontally(tween(300)) { -it / 4 } + fadeIn(tween(300)) togetherWith
+        slideOutHorizontally(tween(300)) { it / 4 } + fadeOut(tween(300))
+
+// ─── EntryBuilder wrapper ─────────────────────────────────────────────────────
+
 @JvmInline
 value class EntryBuilder(val scope: EntryProviderScope<NavKey>)

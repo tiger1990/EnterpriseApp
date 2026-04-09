@@ -1,10 +1,38 @@
-*.iml
-.gradle
-/local.properties
-/.idea/*
-.DS_Store
+# ─── Gradle ───────────────────────────────────────────────────────────────────
+.gradle/
 **/build/
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+!gradle/wrapper/gradle-wrapper.jar   # Keep: needed to bootstrap builds without local Gradle
+
+# ─── Android / SDK ────────────────────────────────────────────────────────────
+local.properties                     # SDK path, signing vars — machine-specific
+*.iml                                # IntelliJ module files — regenerated on import
+/captures                            # Android Studio profiler captures
+.externalNativeBuild/                # CMake / ndk-build side outputs
+.cxx/                                # C/C++ build intermediates
+
+# ─── IntelliJ / Android Studio ────────────────────────────────────────────────
+.idea/
+!.idea/codeStyles/                   # Keep: shared code style settings
+!.idea/inspectionProfiles/           # Keep: shared inspection profiles
+!.idea/dictionaries/                 # Keep: shared spell-check dictionaries
+
+# ─── Signing & Secrets ────────────────────────────────────────────────────────
+*.keystore
+*.jks
+keystore.properties
+secrets.properties
+google-services.json                 # Firebase — contains project/API keys
+GoogleService-Info.plist             # Firebase iOS equivalent
+
+# ─── OS & Editor noise ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# ─── Test & Coverage outputs ──────────────────────────────────────────────────
+**/test-results/
+**/jacoco/
+
+# ─── Baseline profiles (generated, not authored) ──────────────────────────────
+**/generated/baselineProfiles/

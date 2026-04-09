@@ -2,9 +2,11 @@ package com.enterprise.core.data.di
 
 import com.enterprise.core.data.ItemRepositoryImpl
 import com.enterprise.core.data.SearchRepositoryImpl
+import com.enterprise.core.data.ThemeRepositoryImpl
 import com.enterprise.core.data.UserRepositoryImpl
 import com.enterprise.core.domain.repository.ItemRepository
 import com.enterprise.core.domain.repository.SearchRepository
+import com.enterprise.core.domain.repository.ThemeRepository
 import com.enterprise.core.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -33,4 +35,8 @@ abstract class DataModule {
     @Binds
     @Singleton
     abstract fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindThemeRepository(impl: ThemeRepositoryImpl): ThemeRepository
 }

@@ -9,10 +9,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.enterprise.app.navigation.appEntries
 import com.enterprise.app.theme.EnterpriseTheme
+import com.enterprise.core.domain.repository.ThemeRepository
 import com.enterprise.core.navigation.AppNavHost
 import com.enterprise.core.navigation.NavigationEventBus
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,8 +46,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var navigationEventBus: NavigationEventBus
+    @Inject lateinit var navigationEventBus: NavigationEventBus
+    @Inject lateinit var themeRepository: ThemeRepository
 
     /**
      * Compose-observable — writing from onNewIntent automatically
@@ -58,10 +61,12 @@ class MainActivity : ComponentActivity() {
         pendingDeepLinkUri = intent.data
 
         setContent {
-            EnterpriseTheme {
+            val isDarkTheme by themeRepository.observeIsDarkTheme()
+                .collectAsStateWithLifecycle(initialValue = false)
+            EnterpriseTheme(darkTheme = isDarkTheme) {
                 EnterpriseApp(
                     navigationEventBus = navigationEventBus,
-                    deepLinkUri        = pendingDeepLinkUri,
+                    deepLinkUri        = { pendingDeepLinkUri },
                 )
             }
         }
@@ -82,11 +87,21 @@ class MainActivity : ComponentActivity() {
 private fun EnterpriseApp(
     navigationEventBus: NavigationEventBus,
     modifier: Modifier = Modifier,
-    deepLinkUri: Uri? = null,
+    // Lambda defers the state read of pendingDeepLinkUri into the composition body.
+    // android.net.Uri is not @Stable, so a direct Uri? param would make this
+    // composable non-skippable. A () -> Uri? lambda is stable, allowing Compose
+    // to skip EnterpriseApp on unrelated recompositions (e.g. isDarkTheme changes).
+    deepLinkUri: () -> Uri? = { null },
 ) {
+    // Stable reference: navigationEvents getter calls receiveAsFlow() on every access,
+    // producing a new Flow object each time. Without remember, AppNavHost receives a
+    // different Flow reference on every recomposition, preventing it from skipping.
+    // remember(navigationEventBus) reuses the same instance for the bus's lifetime.
+    val navigationEvents = remember(navigationEventBus) { navigationEventBus.navigationEvents }
+
     AppNavHost(
-        navigationEvents = navigationEventBus.navigationEvents,
-        deepLinkUri      = deepLinkUri,
+        navigationEvents = navigationEvents,
+        deepLinkUri      = deepLinkUri(),   // unwrap lambda → Uri?; AppNavHost unchanged
         modifier         = modifier,
     ) {
         appEntries()

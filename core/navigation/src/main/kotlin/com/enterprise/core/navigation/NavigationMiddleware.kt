@@ -1,6 +1,6 @@
 package com.enterprise.core.navigation
 
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.Flow
 
 /**
  * NavigationMiddleware is the ONLY mechanism through which a ViewModel
@@ -14,16 +14,24 @@ import kotlinx.coroutines.flow.SharedFlow
  *
  * ✅ This pattern:
  *   1. ViewModel emits a NavigationEvent (a sealed class — pure data)
- *   2. NavigationMiddleware collects events from the ViewModel's SharedFlow
+ *   2. NavigationMiddleware collects events from a Channel-backed Flow
  *   3. The single AppNavHost (in :app) subscribes and performs the actual
- *      NavController operation inside a LaunchedEffect — scoped to the
+ *      back-stack operation inside a LaunchedEffect — scoped to the
  *      Composition lifecycle.
  *
  * The NavController never leaves the AppNavHost composable.
+ *
+ * ─── Why Flow and not SharedFlow ─────────────────────────────────────────────
+ * SharedFlow(replay=1) re-delivers the last event to any new collector, which
+ * causes double-navigation whenever AppNavHost's LaunchedEffect restarts (e.g.
+ * after a configuration change that creates a new backStack instance).
+ * A Channel-backed Flow gives exactly-once delivery: events are buffered until
+ * consumed, and a restarted collector continues reading from the buffer without
+ * seeing already-consumed events.
  */
 interface NavigationMiddleware {
-    /** Hot flow of pending navigation commands. Collect in AppNavHost. */
-    val navigationEvents: SharedFlow<NavigationEvent>
+    /** Channel-backed flow of pending navigation commands. Collect in AppNavHost. */
+    val navigationEvents: Flow<NavigationEvent>
 }
 
 /**

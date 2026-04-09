@@ -17,6 +17,13 @@ class ObserveItemsUseCase @Inject constructor(
         repository.observeItems()
 }
 
+class RefreshItemsUseCase @Inject constructor(
+    private val repository: ItemRepository,
+) : NoParamsUseCase<Unit>() {
+    override suspend fun execute(params: Unit): Result<Unit> =
+        repository.refreshItems()
+}
+
 class GetItemUseCase @Inject constructor(
     private val repository: ItemRepository,
 ) : UseCase<String, Item>() {

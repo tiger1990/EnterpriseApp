@@ -22,9 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.enterprise.core.domain.model.Item
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.enterprise.core.tokens.R
+import com.enterprise.feature.search.mvi.SearchItemUiModel
 import com.enterprise.feature.search.mvi.SearchAction
 import com.enterprise.feature.search.mvi.SearchState
 import com.enterprise.feature.search.mvi.SearchViewModel
@@ -32,7 +32,7 @@ import com.enterprise.feature.search.mvi.SearchViewModel
 // ═══════════════════════════ UI ═══════════════════════════════════════════════
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = viewModel()) {
+fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     SearchContent(state = state, onAction = viewModel::dispatch)
 }
@@ -88,7 +88,7 @@ internal fun SearchContent(
                 modifier  = Modifier.fillMaxWidth(),
             ) {
                 // Search results inside expanded SearchBar
-                SearchResults(items = state.results, onItemClick = { onAction(SearchAction.ResultClicked(it)) })
+                SearchResults(items = state.results, onItemClick = { onAction(SearchAction.ResultClicked(it.id, it.title)) })
             }
 
             if (!state.isActive) {
@@ -103,7 +103,7 @@ internal fun SearchContent(
 }
 
 @Composable
-private fun SearchResults(items: List<Item>, onItemClick: (Item) -> Unit) {
+private fun SearchResults(items: List<SearchItemUiModel>, onItemClick: (SearchItemUiModel) -> Unit) {
     LazyColumn(contentPadding = PaddingValues(vertical = 8.dp)) {
         items(items, key = { it.id }) { item ->
             ListItem(

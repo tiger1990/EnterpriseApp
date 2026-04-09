@@ -28,7 +28,7 @@ import android.net.Uri
  *   https://travelmonk.com/**               → HomeRoute (web fallback, no-www variant)
  *
  * Returns ErrorRoute for malformed enterprise URIs to provide user feedback.
-*/*/
+ */*/
  */
 object DeepLinkRouter {
 

@@ -4,8 +4,7 @@ import com.enterprise.core.common.mvi.Reducer
 import com.enterprise.core.common.mvi.UiAction
 import com.enterprise.core.common.mvi.UiEffect
 import com.enterprise.core.common.mvi.UiState
-import com.enterprise.core.domain.model.Item
-import com.enterprise.core.domain.model.SearchResult
+
 
 // ═══════════════════════════ MVI ═══════════════════════════════════════════════
 
@@ -13,7 +12,7 @@ data class SearchState(
     val query: String = "",
     val isActive: Boolean = false,
     val isSearching: Boolean = false,
-    val results: List<Item> = emptyList(),
+    val results: List<SearchItemUiModel> = emptyList(),
     val recentSearches: List<String> = emptyList(),
     val errorMessage: String? = null,
 ) : UiState
@@ -21,14 +20,15 @@ data class SearchState(
 sealed interface SearchAction : UiAction {
     data class QueryChanged(val query: String) : SearchAction
     data class Search(val query: String) : SearchAction
-    data class ResultClicked(val item: Item) : SearchAction
+    data class ResultClicked(val itemId: String, val itemTitle: String) : SearchAction
     data object BackPressed : SearchAction
     data object ClearQuery : SearchAction
     data class ActiveChanged(val active: Boolean) : SearchAction
 
-    // Internal
-    data class ResultsLoaded(val result: SearchResult) : SearchAction
+    // Internal — already mapped to UiModel before dispatch
+    data class ResultsLoaded(val results: List<SearchItemUiModel>) : SearchAction
     data class SearchFailed(val message: String) : SearchAction
+    data class RecentSearchesUpdated(val searches: List<String>) : SearchAction
 }
 
 sealed interface SearchEffect : UiEffect {
@@ -42,7 +42,7 @@ class SearchReducer : Reducer<SearchState, SearchAction> {
         is SearchAction.ActiveChanged -> state.copy(isActive = action.active)
         SearchAction.ClearQuery -> state.copy(query = "", results = emptyList())
         is SearchAction.ResultsLoaded -> state.copy(
-            results = action.result.items,
+            results = action.results,
             isSearching = false,
         )
 
@@ -50,6 +50,8 @@ class SearchReducer : Reducer<SearchState, SearchAction> {
             isSearching = false,
             errorMessage = action.message,
         )
+
+        is SearchAction.RecentSearchesUpdated -> state.copy(recentSearches = action.searches)
 
         is SearchAction.ResultClicked,
         SearchAction.BackPressed -> state

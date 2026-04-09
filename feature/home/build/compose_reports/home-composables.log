@@ -1,1 +1,0 @@
-applier inference HomeScreen.kt:147:5: Type disagreement [Binding(185), [Binding(186)], [Binding(187)], [Binding(token = androidx.compose.ui.UiComposable)]] <=> [Binding(185), [Binding(185)], [Binding(185)]]

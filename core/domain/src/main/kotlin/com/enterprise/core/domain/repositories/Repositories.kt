@@ -30,3 +30,8 @@ interface UserRepository {
     suspend fun updateProfile(profile: UserProfile): Result<UserProfile>
     fun observeProfile(): Flow<Result<UserProfile>>
 }
+
+interface ThemeRepository {
+    fun observeIsDarkTheme(): Flow<Boolean>
+    suspend fun setDarkTheme(enabled: Boolean)
+}

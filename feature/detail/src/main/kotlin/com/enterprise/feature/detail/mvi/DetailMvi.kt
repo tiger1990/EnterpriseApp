@@ -4,14 +4,13 @@ import com.enterprise.core.common.mvi.Reducer
 import com.enterprise.core.common.mvi.UiAction
 import com.enterprise.core.common.mvi.UiEffect
 import com.enterprise.core.common.mvi.UiState
-import com.enterprise.core.domain.model.Item
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
 data class DetailState(
     val itemId: String = "",
     val itemTitle: String = "",   // Shown immediately from nav args (no flicker)
-    val item: Item? = null,
+    val item: DetailItemUiModel? = null,
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
 ) : UiState
@@ -25,10 +24,10 @@ sealed interface DetailAction : UiAction {
     data object BackPressed : DetailAction
     data object ErrorDismissed : DetailAction
 
-    // Internal
-    data class ItemLoaded(val item: Item) : DetailAction
+    // Internal — already mapped to UiModel before dispatch
+    data class ItemLoaded(val item: DetailItemUiModel) : DetailAction
     data class LoadFailed(val message: String) : DetailAction
-    data class FavouriteUpdated(val item: Item) : DetailAction
+    data class FavouriteUpdated(val item: DetailItemUiModel) : DetailAction
 }
 
 // ─── Effects ──────────────────────────────────────────────────────────────────

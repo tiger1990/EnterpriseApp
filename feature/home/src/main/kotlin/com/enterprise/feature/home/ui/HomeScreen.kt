@@ -46,8 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.enterprise.core.domain.model.Item
 import com.enterprise.core.tokens.R
+import com.enterprise.feature.home.mvi.HomeItemUiModel
 import com.enterprise.feature.home.mvi.HomeAction
 import com.enterprise.feature.home.mvi.HomeEffect
 import com.enterprise.feature.home.mvi.HomeState
@@ -114,6 +114,17 @@ internal fun HomeContent(
             ) {
                 AnimatedContent(
                     targetState = state,
+                    // contentKey determines WHEN to animate. Using the full state means
+                    // any item data change (e.g. favourite toggle) triggers the transition.
+                    // Key on the display mode only: animate loading↔content, not item updates.
+                    contentKey = { s ->
+                        when {
+                            s.isLoading -> 0
+                            s.errorMessage != null -> 1
+                            s.isEmpty -> 2
+                            else -> 3
+                        }
+                    },
                     label = "home_content",
                 ) { s ->
                     when {
@@ -126,7 +137,7 @@ internal fun HomeContent(
                         s.isEmpty -> EmptyState()
                         else -> ItemList(
                             items = if (s.selectedTabIndex == 1) s.favourites else s.items,
-                            onItemClick = { onAction(HomeAction.ItemClicked(it)) },
+                            onItemClick = { onAction(HomeAction.ItemClicked(it.id, it.title)) },
                             onFavouriteToggle = { onAction(HomeAction.FavouriteToggled(it)) },
                         )
                     }
@@ -183,8 +194,8 @@ private fun HomeTabs(
 
 @Composable
 private fun ItemList(
-    items: List<Item>,
-    onItemClick: (Item) -> Unit,
+    items: List<HomeItemUiModel>,
+    onItemClick: (HomeItemUiModel) -> Unit,
     onFavouriteToggle: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -210,7 +221,7 @@ private fun ItemList(
 
 @Composable
 private fun ItemCard(
-    item: Item,
+    item: HomeItemUiModel,
     onClick: () -> Unit,
     onFavouriteToggle: () -> Unit,
     modifier: Modifier = Modifier,
@@ -245,7 +256,7 @@ private fun ItemCard(
             IconButton(onClick = onFavouriteToggle) {
                 Icon(
                     painter = painterResource(id = if (item.isFavourite) R.drawable.ic_favorite else R.drawable.ic_heart_broken),
-                    contentDescription = if (item.isFavourite) "Remove favourite" else "Add favourite",
+                    contentDescription = item.favouriteContentDescription,
                     tint = if (item.isFavourite) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -285,7 +296,11 @@ private fun EmptyState() {
 @Composable
 private fun HomeContentPreview() {
     val previewItems = (1..5).map {
-        Item("$it", "Item $it", "Description $it", "", it % 2 == 0)
+        HomeItemUiModel(
+            id = "$it", title = "Item $it", description = "Description $it",
+            imageUrl = "", isFavourite = it % 2 == 0,
+            favouriteContentDescription = if (it % 2 == 0) "Remove from favourites" else "Add to favourites",
+        )
     }
     MaterialTheme {
         HomeContent(

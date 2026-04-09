@@ -4,12 +4,11 @@ import com.enterprise.core.common.mvi.Reducer
 import com.enterprise.core.common.mvi.UiAction
 import com.enterprise.core.common.mvi.UiEffect
 import com.enterprise.core.common.mvi.UiState
-import com.enterprise.core.domain.model.UserProfile
 
 // ═══════════════════════════ MVI ═══════════════════════════════════════════════
 
 data class ProfileState(
-    val profile: UserProfile? = null,
+    val profile: ProfileUiModel? = null,
     val isLoading: Boolean    = false,
     val errorMessage: String? = null,
 ) : UiState
@@ -19,7 +18,7 @@ sealed interface ProfileAction : UiAction {
     data object EditProfileTapped : ProfileAction
     data object SettingsTapped   : ProfileAction
     data object BackPressed      : ProfileAction
-    data class ProfileLoaded(val profile: UserProfile) : ProfileAction
+    data class ProfileLoaded(val profile: ProfileUiModel) : ProfileAction
     data class LoadFailed(val message: String)         : ProfileAction
 }
 

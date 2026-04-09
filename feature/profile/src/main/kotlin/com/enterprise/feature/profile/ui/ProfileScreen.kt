@@ -14,18 +14,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.enterprise.core.domain.model.UserProfile
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.enterprise.core.tokens.R
+import com.enterprise.feature.profile.mvi.ProfileUiModel
 import com.enterprise.feature.profile.mvi.ProfileAction
 import com.enterprise.feature.profile.mvi.ProfileState
 import com.enterprise.feature.profile.mvi.ProfileViewModel
@@ -33,18 +37,26 @@ import com.enterprise.feature.profile.mvi.ProfileViewModel
 // ═══════════════════════════ UI ═══════════════════════════════════════════════
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
+fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    ProfileContent(state = state, onAction = viewModel::dispatch)
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        viewModel.effects.collect { /* ProfileEffect has no variants yet — collector ready for future effects */ }
+    }
+
+    ProfileContent(state = state, snackbarHost = snackbarHostState, onAction = viewModel::dispatch)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ProfileContent(
     state: ProfileState,
+    snackbarHost: SnackbarHostState,
     onAction: (ProfileAction) -> Unit,
 ) {
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHost) },
         topBar = {
             //CenterAlignedTopAppBar( // Or TopAppBar for left-aligned
             TopAppBar(
@@ -102,7 +114,7 @@ internal fun ProfileContent(
 
 @Composable
 private fun ProfileBody(
-    profile: UserProfile,
+    profile: ProfileUiModel,
     onSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -120,7 +132,7 @@ private fun ProfileBody(
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        if (profile.bio.isNotEmpty()) {
+        if (profile.hasBio) {
             Spacer(Modifier.height(16.dp))
             Text(profile.bio, style = MaterialTheme.typography.bodyMedium)
         }

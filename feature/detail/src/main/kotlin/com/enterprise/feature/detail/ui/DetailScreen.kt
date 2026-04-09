@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.enterprise.core.tokens.R
 import com.enterprise.feature.detail.mvi.DetailAction
+import com.enterprise.feature.detail.mvi.DetailItemUiModel
 import com.enterprise.feature.detail.mvi.DetailEffect
 import com.enterprise.feature.detail.mvi.DetailState
 import com.enterprise.feature.detail.mvi.DetailViewModel
@@ -108,6 +109,14 @@ internal fun DetailContent(
 
         AnimatedContent(
             targetState = state,
+            contentKey = { s ->
+                when {
+                    s.isLoading -> 0
+                    s.errorMessage != null -> 1
+                    s.item != null -> 2
+                    else -> 3
+                }
+            },
             label = "detail_content",
             modifier = Modifier.padding(paddingValues),
         ) { s ->
@@ -133,7 +142,7 @@ internal fun DetailContent(
 
 @Composable
 private fun DetailBody(
-    item: com.enterprise.core.domain.model.Item,
+    item: DetailItemUiModel,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -159,7 +168,7 @@ private fun DetailBody(
                 )
                 Spacer(Modifier.height(24.dp))
                 Text(
-                    text = "Item ID: ${item.id}",
+                    text = item.idLabel,
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.outline,
                 )

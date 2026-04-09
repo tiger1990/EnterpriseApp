@@ -7,6 +7,8 @@ import com.enterprise.core.domain.usecase.GetItemUseCase
 import com.enterprise.core.domain.usecase.ToggleFavouriteUseCase
 import com.enterprise.core.navigation.NavigationEvent
 import com.enterprise.core.navigation.NavigationEventBus
+import com.enterprise.core.common.mvi.ActionConcurrency
+import com.enterprise.feature.detail.mvi.toDetailUiModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -46,6 +48,19 @@ class DetailViewModel @AssistedInject constructor(
         ): DetailViewModel
     }
 
+    // ─── Action concurrency ───────────────────────────────────────────────────
+    // LoadItem: idempotent fetch — drop concurrent re-triggers (double init dispatch,
+    //   rapid pull-to-refresh). The in-flight request already covers the need.
+    // FavouriteToggled: one toggle in flight at a time — prevents flip-flop races
+    //   where two concurrent API calls produce contradictory final state.
+    override fun actionConcurrency(action: DetailAction) = when (action) {
+        DetailAction.LoadItem         -> ActionConcurrency.DropIfBusy("load")
+        DetailAction.FavouriteToggled -> ActionConcurrency.DropIfBusy("favourite")
+        else                          -> ActionConcurrency.Concurrent
+    }
+
+    // itemId / itemTitle come from the Nav3 route key — no SavedStateHandle persistence needed.
+
     init {
         dispatch(DetailAction.Initialize(itemId, itemTitle))
         dispatch(DetailAction.LoadItem)
@@ -55,7 +70,7 @@ class DetailViewModel @AssistedInject constructor(
         when (action) {
             DetailAction.LoadItem -> {
                 when (val result = getItem(state.value.itemId)) {
-                    is Result.Success -> dispatch(DetailAction.ItemLoaded(result.data))
+                    is Result.Success -> dispatch(DetailAction.ItemLoaded(result.data.toDetailUiModel()))
                     is Result.Error   -> dispatch(DetailAction.LoadFailed(result.exception.message ?: "Error"))
                     else -> Unit
                 }
@@ -64,7 +79,7 @@ class DetailViewModel @AssistedInject constructor(
             DetailAction.FavouriteToggled -> {
                 val itemId = state.value.item?.id ?: return
                 when (val result = toggleFavourite(itemId)) {
-                    is Result.Success -> dispatch(DetailAction.FavouriteUpdated(result.data))
+                    is Result.Success -> dispatch(DetailAction.FavouriteUpdated(result.data.toDetailUiModel()))
                     is Result.Error   -> emitEffect(DetailEffect.ShowSnackbar("Failed to toggle favourite"))
                     else -> Unit
                 }
@@ -75,4 +90,5 @@ class DetailViewModel @AssistedInject constructor(
             else -> Unit
         }
     }
+
 }

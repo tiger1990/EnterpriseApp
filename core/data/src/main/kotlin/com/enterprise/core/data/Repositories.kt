@@ -7,6 +7,7 @@ import com.enterprise.core.domain.model.SearchResult
 import com.enterprise.core.domain.model.UserProfile
 import com.enterprise.core.domain.repository.ItemRepository
 import com.enterprise.core.domain.repository.SearchRepository
+import com.enterprise.core.domain.repository.ThemeRepository
 import com.enterprise.core.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -79,7 +80,8 @@ class ItemRepositoryImpl @Inject constructor() : ItemRepository {
     override fun observeItems(): Flow<Result<List<Item>>> = _items.asStateFlow()
 
     override suspend fun getItem(id: String): Result<Item> = safeCall {
-        FakeData.items.first { it.id == id }
+        val current = (_items.value as? Result.Success)?.data ?: FakeData.items
+        current.first { it.id == id }
     }
 
     override suspend fun toggleFavourite(itemId: String): Result<Item> = safeCall {
@@ -137,23 +139,36 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
     override fun observeProfile(): Flow<Result<UserProfile>> = _profile.asStateFlow()
 }
 
+@Singleton
+class ThemeRepositoryImpl @Inject constructor() : ThemeRepository {
+    // In-memory; replace with DataStore for persistence across process death
+    private val _isDarkTheme = MutableStateFlow(false)
+
+    override fun observeIsDarkTheme(): Flow<Boolean> = _isDarkTheme.asStateFlow()
+    override suspend fun setDarkTheme(enabled: Boolean) { _isDarkTheme.value = enabled }
+}
+
 // ─── Fake seed data (replace with API calls) ──────────────────────────────────
+//
+// DTOs are used here intentionally — not domain models — so that the toDomain()
+// mapping path is exercised during development and not discovered broken for the
+// first time when real Retrofit/Room responses flow through in production.
 private object FakeData {
-    val items = (1..20).map { i ->
-        Item(
+    val items: List<Item> = (1..20).map { i ->
+        ItemDto(
             id          = "item_$i",
             title       = "Item Title $i",
             description = "Detailed description for item $i. This showcases the data layer.",
             imageUrl    = "https://picsum.photos/seed/$i/400/300",
             isFavourite = i % 3 == 0,
-        )
+        ).toDomain()
     }
 
-    val profile = UserProfile(
+    val profile: UserProfile = UserProfileDto(
         id        = "user_001",
         name      = "Alex Johnson",
         email     = "alex@enterprise.com",
         avatarUrl = "https://i.pravatar.cc/150?img=1",
         bio       = "Senior Android Engineer",
-    )
+    ).toDomain()
 }

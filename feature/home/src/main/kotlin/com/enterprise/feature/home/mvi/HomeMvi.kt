@@ -4,20 +4,19 @@ import com.enterprise.core.common.mvi.Reducer
 import com.enterprise.core.common.mvi.UiAction
 import com.enterprise.core.common.mvi.UiEffect
 import com.enterprise.core.common.mvi.UiState
-import com.enterprise.core.domain.model.Item
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
 data class HomeState(
-    val items: List<Item> = emptyList(),
+    val items: List<HomeItemUiModel> = emptyList(),
     val isLoading: Boolean = false,
     val isRefreshing: Boolean = false,
     val errorMessage: String? = null,
     val selectedTabIndex: Int = 0,
 ) : UiState {
     // Derived state — computed, not stored
-    val favourites: List<Item> get() = items.filter { it.isFavourite }
-    val isEmpty: Boolean get() = !isLoading && items.isEmpty() && errorMessage == null
+    val favourites: List<HomeItemUiModel> get() = items.filter { it.isFavourite }
+    val isEmpty: Boolean get() = !isLoading && !isRefreshing && items.isEmpty() && errorMessage == null
 }
 
 // ─── Actions ──────────────────────────────────────────────────────────────────
@@ -25,17 +24,17 @@ data class HomeState(
 sealed interface HomeAction : UiAction {
     data object LoadItems : HomeAction
     data object RefreshItems : HomeAction
-    data class ItemClicked(val item: Item) : HomeAction
+    data class ItemClicked(val itemId: String, val itemTitle: String) : HomeAction
     data class FavouriteToggled(val itemId: String) : HomeAction
     data object SearchClicked : HomeAction
     data object ProfileClicked : HomeAction
     data class TabSelected(val index: Int) : HomeAction
     data object ErrorDismissed : HomeAction
 
-    // Internal — emitted by middleware after async operations
-    data class ItemsLoaded(val items: List<Item>) : HomeAction
+    // Internal — emitted by middleware after async operations, already mapped to UiModel
+    data class ItemsLoaded(val items: List<HomeItemUiModel>) : HomeAction
     data class ItemsLoadFailed(val message: String) : HomeAction
-    data class FavouriteUpdated(val item: Item) : HomeAction
+    data class FavouriteUpdated(val item: HomeItemUiModel) : HomeAction
 }
 
 // ─── Effects ──────────────────────────────────────────────────────────────────
@@ -79,10 +78,27 @@ class HomeReducer : Reducer<HomeState, HomeAction> {
 
         HomeAction.ErrorDismissed -> state.copy(errorMessage = null)
 
+        // Optimistic update: flip isFavourite immediately so the UI responds to the tap
+        // without waiting for the async toggleFavourite call or the stream re-emission.
+        // FavouriteUpdated (on success) and ItemsLoaded (from the stream) will confirm the
+        // correct server state. On error, FavouriteUpdated is not dispatched and the
+        // stream re-emits the reverted value — the UI self-corrects automatically.
+        is HomeAction.FavouriteToggled -> state.copy(
+            items = state.items.map { item ->
+                if (item.id != action.itemId) item
+                else {
+                    val toggled = !item.isFavourite
+                    item.copy(
+                        isFavourite = toggled,
+                        favouriteContentDescription = if (toggled) "Remove from favourites" else "Add to favourites",
+                    )
+                }
+            }
+        )
+
         // Navigation actions don't mutate state
         is HomeAction.ItemClicked,
         HomeAction.SearchClicked,
-        HomeAction.ProfileClicked,
-        is HomeAction.FavouriteToggled -> state
+        HomeAction.ProfileClicked -> state
     }
 }
