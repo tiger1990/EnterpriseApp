@@ -28,7 +28,7 @@ baselineProfile {
 dependencies {
     implementation(libs.androidx.junit)
     implementation(libs.androidx.espresso)
-    implementation(libs.androidx.baseline.profile)
+    //implementation(libs.androidx.baseline.profile)
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.androidx.uiautomator)
     implementation(libs.androidx.profileinstaller)
